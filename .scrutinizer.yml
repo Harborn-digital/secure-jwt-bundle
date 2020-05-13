@@ -1,0 +1,46 @@
+checks:
+  php: true
+
+build:
+  environment:
+    php:
+      version: 7.4
+      compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/7.4.3/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/7.4.3/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/7.4.3 --libexecdir=/home/scrutinizer/.phpenv/versions/7.4.3/libexec --enable-intl --with-openssl --without-pear --with-gd --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-maintainer-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/7.4.3/pear'
+
+  nodes:
+    phpunit:
+      environment:
+        timezone: Europe/Amsterdam
+        postgresql: false
+        rabbitmq: false
+        mysql: false
+        redis: false
+        elasticsearch: false
+        php:
+          version: 7.4
+      tests:
+        override:
+          - command: 'vendor/bin/phpunit --coverage-clover=code-coverage'
+            coverage:
+              file: 'code-coverage'
+              format: 'clover'
+
+    analysis:
+      environment:
+        postgresql: false
+        redis: false
+        mongodb: false
+        mysql: false
+        php:
+          version: 7.4
+      tests:
+        override:
+          - php-scrutinizer-run
+
+  dependencies:
+    override:
+      - command: 'composer install --no-interaction --no-scripts'
+
+filter:
+  excluded_paths:
+    - 'tests/*'
