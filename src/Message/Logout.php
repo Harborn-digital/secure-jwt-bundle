@@ -18,6 +18,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     itemOperations={},
  *     output=false
  * )
+ *
+ * @codeCoverageIgnore Trivial class with only a getter
  */
 final class Logout
 {
