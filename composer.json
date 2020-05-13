@@ -1,0 +1,23 @@
+{
+    "name": "connectholland/secure-jwt",
+    "type": "library",
+    "description": "Library to increate security of JWT based security",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.4",
+        "lexik/jwt-authentication-bundle": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConnectHolland\\SecureJWT\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConnectHolland\\SecureJWT\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    }
+}
