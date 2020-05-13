@@ -22,6 +22,8 @@ class User implements TwoFactorUserInterface, UserInterface
 
     public string $username = 'user';
 
+    public bool $confirmed = false;
+
     public function getGoogleAuthenticatorSecret(): ?string
     {
         return $this->googleAuthenticatorSecret;
@@ -69,5 +71,15 @@ class User implements TwoFactorUserInterface, UserInterface
     public function getGoogleAuthenticatorUsername(): string
     {
         return $this->username;
+    }
+
+    public function isGoogleAuthenticatorConfirmed(): bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setGoogleAuthenticatorConfirmed(bool $confirmed): void
+    {
+        $this->confirmed = $confirmed;
     }
 }
