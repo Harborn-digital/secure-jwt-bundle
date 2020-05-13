@@ -97,3 +97,87 @@ In the `security.yaml` file:
             authenticators:
                 - ConnectHolland\SecureJWT\Security\Guard\JWTTokenAuthenticator
 ```
+
+## Two Factor Authentication in JWT
+
+### Configure Google Authenticator
+
+In the `scheb_two_factor.yaml` file:
+
+```yaml
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    google:
+        enabled: true
+        server_name: Secure Server
+        issuer: Connect Holland
+        digits: 6
+        window: 1
+```
+
+### Use the two_factor_jwt security listener and provider
+
+In the `security.yaml` file:
+
+```yaml
+    login:
+        pattern:  ^/api/login
+        stateless: true
+        anonymous: true        
+        two_factor_jwt:
+            check_path:               /api/login_check
+            success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
+            failure_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationFailureHandler
+```
+
+And load the required services in `services.yaml`:
+
+```yaml
+imports:
+    - { resource: '%kernel.project_dir%/vendor/connectholland/secure-jwt/config/services.yaml' }
+```
+
+### Implement the right interfaces
+
+Your User object should implement `ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface`.
+
+## Using 2FA
+
+```bash
+curl -X POST http://host/api/users/authenticate -H 'Content-Type: application/json' -d '{"username": "username", "password": "password"}'
+```
+
+This will give the following response:
+```json
+{
+  "result":"ok",
+  "status":"two factor authentication required"
+}
+```
+
+If 2FA is not yet setup you will receive:
+
+```json
+{
+  "result":"ok",
+  "message":"use provided QR code to set up two factor authentication",
+  "qr":"QR code (data URL)"
+}
+```
+
+In the next call add the two factor challenge:
+
+```bash
+curl -X POST http://host/api/users/authenticate -H 'Content-Type: application/json' -d '{"username": "username", "password": "password", "challenge": "123456"}'
+```
+
+If correct you'll receive:
+
+```json
+{
+  "result":"ok"
+}
+```
+
+The response headers will include a secure cookie containing the JWT token to allow future authenticated calls.
