@@ -5,7 +5,8 @@
     "license": "proprietary",
     "require": {
         "php": "^7.4",
-        "lexik/jwt-authentication-bundle": "^2.6"
+        "lexik/jwt-authentication-bundle": "^2.6",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
