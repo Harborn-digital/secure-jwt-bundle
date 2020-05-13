@@ -31,6 +31,9 @@ class LoginSubscriber implements EventSubscriberInterface
         $this->googleAuthenticator = $googleAuthenticator;
     }
 
+    /**
+     * @codeCoverageIgnore Trivial getter
+     */
     public static function getSubscribedEvents(): array
     {
         return [

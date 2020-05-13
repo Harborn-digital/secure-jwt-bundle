@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class TwoFactorJWTProviderTest extends TestCase
@@ -66,7 +67,7 @@ class TwoFactorJWTProviderTest extends TestCase
     /**
      * @dataProvider provideTestAuthentication
      */
-    public function testCheckAuthentication(TwoFactorJWTToken $token, User $user, \Exception $exception = null): void
+    public function testCheckAuthentication(TwoFactorJWTToken $token, UserInterface $user, \Exception $exception = null): void
     {
         if ($exception instanceof \Exception) {
             $this->expectException(get_class($exception));
@@ -98,6 +99,36 @@ class TwoFactorJWTProviderTest extends TestCase
         $user2->setGoogleAuthenticatorSecret('secret');
 
         return [
+            'Incorrect User gives bad credentials' => [
+                new TwoFactorJWTToken('test', 'password', '123456', 'test'),
+                new class() implements UserInterface {
+                    public function getRoles()
+                    {
+                        // TODO: Implement getRoles() method.
+                    }
+
+                    public function getPassword()
+                    {
+                        return 'password';
+                    }
+
+                    public function getSalt()
+                    {
+                        return '';
+                    }
+
+                    public function getUsername()
+                    {
+                        // TODO: Implement getUsername() method.
+                    }
+
+                    public function eraseCredentials()
+                    {
+                        // TODO: Implement eraseCredentials() method.
+                    }
+                },
+                new BadCredentialsException(),
+            ],
             'No password gives bad credentials' => [
                 new TwoFactorJWTToken('test', '', '123456', 'test'),
                 new User(),
