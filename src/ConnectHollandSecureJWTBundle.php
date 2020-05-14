@@ -5,7 +5,7 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\SecureJWTBundle;
+namespace ConnectHolland\SecureJWTBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
