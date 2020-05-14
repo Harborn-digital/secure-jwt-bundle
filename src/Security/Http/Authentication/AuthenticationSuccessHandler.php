@@ -5,7 +5,7 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Security\Http\Authentication;
+namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler as LexikAuthenticationSuccessHandler;
 use Symfony\Component\HttpFoundation\Cookie;

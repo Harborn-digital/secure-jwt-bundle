@@ -7,9 +7,9 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Security\Guard;
+namespace ConnectHolland\SecureJWTBundle\Security\Guard;
 
-use ConnectHolland\SecureJWT\Entity\InvalidToken;
+use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;

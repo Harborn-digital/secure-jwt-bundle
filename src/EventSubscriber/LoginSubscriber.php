@@ -5,10 +5,10 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\EventSubscriber;
+namespace ConnectHolland\SecureJWTBundle\EventSubscriber;
 
-use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
-use ConnectHolland\SecureJWT\Event\SetupTwoFactorAuthenticationEvent;
+use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;

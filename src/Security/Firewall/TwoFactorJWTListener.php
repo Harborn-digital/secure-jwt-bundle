@@ -5,9 +5,9 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Security\Firewall;
+namespace ConnectHolland\SecureJWTBundle\Security\Firewall;
 
-use ConnectHolland\SecureJWT\Security\Token\TwoFactorJWTToken;
+use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;

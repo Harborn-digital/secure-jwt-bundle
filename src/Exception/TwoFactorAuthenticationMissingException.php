@@ -5,7 +5,7 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Exception;
+namespace ConnectHolland\SecureJWTBundle\Exception;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 

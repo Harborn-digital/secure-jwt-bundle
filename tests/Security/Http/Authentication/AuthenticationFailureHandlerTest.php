@@ -5,13 +5,13 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Security\Http\Authentication;
+namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWT\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWT\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWT\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationFailureHandler;
-use ConnectHolland\SecureJWT\Tests\Fixture\User;
+use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler;
+use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;

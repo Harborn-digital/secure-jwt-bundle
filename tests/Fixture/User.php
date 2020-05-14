@@ -5,9 +5,9 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Fixture;
+namespace ConnectHolland\SecureJWTBundle\Tests\Fixture;
 
-use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
+use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements TwoFactorUserInterface, UserInterface

@@ -7,11 +7,11 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\EventSubscriber;
+namespace ConnectHolland\SecureJWTBundle\Tests\EventSubscriber;
 
-use ConnectHolland\SecureJWT\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWT\EventSubscriber\LoginSubscriber;
-use ConnectHolland\SecureJWT\Tests\Fixture\User;
+use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use ConnectHolland\SecureJWTBundle\EventSubscriber\LoginSubscriber;
+use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;

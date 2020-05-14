@@ -5,9 +5,9 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Event;
+namespace ConnectHolland\SecureJWTBundle\Event;
 
-use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
+use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -5,7 +5,7 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Entity;
+namespace ConnectHolland\SecureJWTBundle\Entity;
 
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 

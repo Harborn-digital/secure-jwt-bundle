@@ -5,12 +5,12 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Security\Http\Authentication\Provider;
+namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider;
 
-use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
-use ConnectHolland\SecureJWT\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWT\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWT\Security\Token\TwoFactorJWTToken;
+use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

@@ -34,7 +34,7 @@ In the `security.yaml` config file:
         anonymous: true
         json_login:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
+            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
             failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 ```
 
@@ -48,12 +48,12 @@ In the `doctrine.yaml` file:
 doctrine:
     orm:
         mappings:
-            ConnectHolland\SecureJWT:
-                is_bundle: false
+            ConnectHolland\SecureJWTBundle:
+                is_bundle: true
                 type: annotation
-                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Entity'
-                prefix: 'ConnectHolland\SecureJWT\Entity'
-                alias: SecureJWT
+                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Entity'
+                prefix: 'ConnectHolland\SecureJWTBundle\Entity'
+                alias: SecureJWTBundle
 ```
 
 And run migrations:
@@ -69,7 +69,7 @@ In the `api_platform.yaml` file:
 ```yaml
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Message']
+        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Message']
 ```
 
 Of course do not remove other required paths that might already be in the `paths` configuration.
@@ -95,7 +95,7 @@ In the `security.yaml` file:
         anonymous: true
         guard:
             authenticators:
-                - ConnectHolland\SecureJWT\Security\Guard\JWTTokenAuthenticator
+                - ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator
 ```
 
 ## Two Factor Authentication in JWT
@@ -127,20 +127,20 @@ In the `security.yaml` file:
         anonymous: true        
         two_factor_jwt:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
-            failure_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationFailureHandler
+            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+            failure_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler
 ```
 
 And load the required services in `services.yaml`:
 
 ```yaml
 imports:
-    - { resource: '%kernel.project_dir%/vendor/connectholland/secure-jwt/config/services.yaml' }
+    - { resource: '%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/config/services.yaml' }
 ```
 
 ### Implement the right interfaces
 
-Your User object should implement `ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface`.
+Your User object should implement `ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface`.
 
 ## Using 2FA
 

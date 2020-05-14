@@ -5,10 +5,10 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Security\Guard;
+namespace ConnectHolland\SecureJWTBundle\Tests\Security\Guard;
 
-use ConnectHolland\SecureJWT\Entity\InvalidToken;
-use ConnectHolland\SecureJWT\Security\Guard\JWTTokenAuthenticator;
+use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
+use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
