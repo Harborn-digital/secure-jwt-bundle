@@ -1,10 +1,11 @@
+imports:
+    - { resource: 'services_security.yaml' }
+
 services:
-    connectholland.secure_jwt.two_factor_jwt.listener:
-        class: ConnectHolland\SecureJWTBundle\Security\Firewall\TwoFactorJWTListener
-        parent: security.authentication.listener.abstract
-        abstract: true
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false
 
-    connectholland.secure_jwt.two_factor_jwt.provider:
-        class: ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider
-        autowire: true
-
+    ConnectHolland\SecureJWTBundle\:
+        resource: '../../src/{EventSubscriber,Handler,Security}'
