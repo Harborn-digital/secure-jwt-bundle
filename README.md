@@ -1,6 +1,46 @@
 # secure-jwt
 Library that makes JWT more secure
 
+## Install
+Installation is not fluent and error free yet, but it is easy to work around:
+
+```bash
+composer require connectholland/secure-jwt-bundle
+```
+
+Will give error in post installation:
+
+```
+Cannot autowire service "ConnectHolland\SecureJWTBundle\EventSubscriber\LoginSubscriber": argument "$googleAuthenticator" of method "__construct()" references class "Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator" but no such service exists.
+```
+
+Configure scheb twofactor Google:
+
+In the `scheb_two_factor.yaml` file:
+
+```yaml
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    google:
+        enabled: true
+        server_name: Secure Server
+        issuer: Connect Holland
+        digits: 6
+        window: 1
+```
+
+Run
+
+```bash
+composer require connectholland/secure-jwt-bundle
+```
+
+Again to finish the installation. 
+
+BTW1: Installation and configuration of the scheb twofactor bundle before installation of this bundle will also prevent this error. 
+BTW2: of course a PR that fixes these issues is welcome :)
+
 ## Cookie storage
 Tokens in local storage are insecure, so if you use tokens from a web interface you should store them somewhere else. A secure cookie is a good location. Configure cookie storage as follows:
 
@@ -129,13 +169,6 @@ In the `security.yaml` file:
             check_path:               /api/login_check
             success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
             failure_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler
-```
-
-And load the required services in `services.yaml`:
-
-```yaml
-imports:
-    - { resource: '%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/config/services.yaml' }
 ```
 
 ### Implement the right interfaces
