@@ -37,3 +37,63 @@ In the `security.yaml` config file:
             success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
             failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 ```
+
+## Invalidate tokens
+By default tokens are valid until they expire. This makes is impossible to really log out. You can configure token invalidatation to allow logouts:
+
+### Create database table
+
+In the `doctrine.yaml` file:
+```yaml
+doctrine:
+    orm:
+        mappings:
+            ConnectHolland\SecureJWT:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Entity'
+                prefix: 'ConnectHolland\SecureJWT\Entity'
+                alias: SecureJWT
+```
+
+And run migrations:
+```bash
+bin/console doctrine:migrations:diff
+bin/console doctrine:migrations:migrate -n
+```
+
+### Configure API endpoint logout
+
+In the `api_platform.yaml` file:
+
+```yaml
+api_platform:
+    mapping:
+        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Message']
+```
+
+Of course do not remove other required paths that might already be in the `paths` configuration.
+
+There will be a `logout` endpoint in your API. This endpoint requires a message formatted like:
+
+```json
+{
+  "logout": "some string"
+}
+```
+
+The value of logout is not important and not used. This field is required because API platform requires at least one field in the message. (A better solution for this is welcome).
+
+### Do not allow invalidated tokens
+
+In the `security.yaml` file:
+
+```yaml
+    api:
+        pattern: ^/api
+        stateless: true
+        anonymous: true
+        guard:
+            authenticators:
+                - ConnectHolland\SecureJWT\Security\Guard\JWTTokenAuthenticator
+```

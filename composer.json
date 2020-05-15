@@ -6,7 +6,11 @@
     "require": {
         "php": "^7.4",
         "lexik/jwt-authentication-bundle": "^2.6",
-        "ext-json": "*"
+        "ext-json": "*",
+        "doctrine/orm": "^2.7",
+        "symfony/messenger": "^5.0",
+        "api-platform/api-pack": "^1.2",
+        "api-platform/core": "^2.5"
     },
     "autoload": {
         "psr-4": {
