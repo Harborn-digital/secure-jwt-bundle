@@ -14,6 +14,8 @@ use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -33,18 +35,17 @@ class TwoFactorJWTProviderTest extends TestCase
 
     private GoogleAuthenticatorInterface $authenticator;
 
+    private MessageBusInterface $messageBus;
+
     public function setUp(): void
     {
         $this->userProvider   = $this->createMock(UserProviderInterface::class);
         $this->encoderFactory = $this->createMock(EncoderFactoryInterface::class);
         $this->authenticator  = $this->createMock(GoogleAuthenticatorInterface::class);
+        $this->messageBus     = new MessageBus();
 
         $this->provider = new TwoFactorJWTProvider(
-            $this->userProvider,
-            $this->createMock(UserCheckerInterface::class),
-            $this->encoderFactory,
-            $this->authenticator,
-            false
+            $this->userProvider, $this->createMock(UserCheckerInterface::class), $this->encoderFactory, $this->authenticator, $this->messageBus, false,
         );
     }
 
