@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SetupTwoFactorAuthenticationEvent
 {
-    public const NAME = 'blauwhoed.setup_two_factor_authentication';
+    public const NAME = 'secure_jwt_bundle.setup_two_factor_authentication';
 
     private TwoFactorUserInterface $user;
 
