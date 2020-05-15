@@ -214,3 +214,6 @@ If correct you'll receive:
 ```
 
 The response headers will include a secure cookie containing the JWT token to allow future authenticated calls.
+
+## Recover codes
+You can retrieve recovery codes for 2FA which allow you to reset 2FA. If a valid recovery code is entered as `challenge`, 2FA will be reset and you'll get a QR code response. 
