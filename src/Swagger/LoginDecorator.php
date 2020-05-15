@@ -28,11 +28,11 @@ class LoginDecorator implements NormalizerInterface
         $docs = $this->decorated->normalize($object, $format, $context);
 
         if (false === array_key_exists('paths', $docs)) {
-            $docs['paths'] = new \ArrayObject();
+            $docs['paths'] = [];
         }
         if (false === array_key_exists('/api/logouts', $docs['paths'])) {
-            $docs['paths']['/api/logouts']         = new \ArrayObject();
-            $docs['paths']['/api/logouts']['post'] = new \ArrayObject();
+            $docs['paths']['/api/logouts']         = [];
+            $docs['paths']['/api/logouts']['post'] = [];
         }
         $docs['paths']['/api/logouts']['post']['tags']        = ['Authentication'];
         $docs['paths']['/api/logouts']['post']['summary']     = 'Invalidate JWT token';
@@ -42,6 +42,9 @@ class LoginDecorator implements NormalizerInterface
         return $docs;
     }
 
+    /**
+     * @codeCoverageIgnore Just a call to the decorated class
+     */
     public function supportsNormalization($data, string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
