@@ -7,6 +7,8 @@
 
 namespace ConnectHolland\SecureJWTBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity()
  * @ORM\Table(name="secure_jwt_recovery_code")
