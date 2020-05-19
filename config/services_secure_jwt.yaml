@@ -1,0 +1,10 @@
+services:
+    connectholland.secure_jwt.two_factor_jwt.listener:
+        class: ConnectHolland\SecureJWT\Security\Firewall\TwoFactorJWTListener
+        parent: security.authentication.listener.abstract
+        abstract: true
+
+    connectholland.secure_jwt.two_factor_jwt.provider:
+        class: ConnectHolland\SecureJWT\Security\Http\Authentication\Provider\TwoFactorJWTProvider
+        autowire: true
+
