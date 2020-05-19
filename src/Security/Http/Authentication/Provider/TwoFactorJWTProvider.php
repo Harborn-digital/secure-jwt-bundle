@@ -51,7 +51,7 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         }
 
         if ('' === $token->getTwoFactorChallenge()) {
-            throw new TwoFactorAuthenticationMissingException('Please provide two factor code to continue login');
+            throw $user->isGoogleAuthenticatorConfirmed() ? new TwoFactorAuthenticationMissingException('Please provide two factor code to continue login') : new TwoFactorSecretNotSetupException($user, 'Please set up two factor auth app');
         }
 
         if (!$this->googleAuthenticator->checkCode($user, $token->getTwoFactorChallenge())) {

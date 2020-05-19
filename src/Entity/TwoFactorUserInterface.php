@@ -12,4 +12,8 @@ use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 interface TwoFactorUserInterface extends TwoFactorInterface
 {
     public function setGoogleAuthenticatorSecret(string $secret): void;
+
+    public function isGoogleAuthenticatorConfirmed(): bool;
+
+    public function setGoogleAuthenticatorConfirmed(bool $confirmed): void;
 }

@@ -15,6 +15,7 @@ use ConnectHolland\SecureJWT\Tests\Fixture\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
@@ -47,6 +48,25 @@ class LoginSubscriberTest extends TestCase
         $this->googleAuthenticator = $this->createMock(GoogleAuthenticator::class);
 
         $this->loginSubscriber = new LoginSubscriber($this->doctrine, $this->qrCodeFactory, $this->googleAuthenticator);
+    }
+
+    public function testConfirm2FASecret(): void
+    {
+        $event   = new AuthenticationSuccessEvent([], new User(), new Response());
+        $manager = $this->createMock(EntityManager::class);
+
+        $manager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->doctrine
+            ->expects($this->once())
+            ->method('getManager')
+            ->willReturn($manager);
+
+        $this->loginSubscriber->confirm2Fa($event);
+
+        $this->assertTrue($event->getUser()->isGoogleAuthenticatorConfirmed());
     }
 
     public function testProvideQRCode(): void

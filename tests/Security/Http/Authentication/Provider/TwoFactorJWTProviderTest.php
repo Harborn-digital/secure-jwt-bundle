@@ -98,6 +98,11 @@ class TwoFactorJWTProviderTest extends TestCase
         $user2->setPassword('password');
         $user2->setGoogleAuthenticatorSecret('secret');
 
+        $user3 = new User();
+        $user3->setPassword('password');
+        $user3->setGoogleAuthenticatorSecret('secret');
+        $user3->setGoogleAuthenticatorConfirmed(true);
+
         return [
             'Incorrect User gives bad credentials' => [
                 new TwoFactorJWTToken('test', 'password', '123456', 'test'),
@@ -134,24 +139,33 @@ class TwoFactorJWTProviderTest extends TestCase
                 new User(),
                 new BadCredentialsException(),
             ],
-            'Setup 2FA' => [
+            'Setup 2FA no secret' => [
                 new TwoFactorJWTToken('test', 'password', '', 'test'),
                 $user1,
                 new TwoFactorSecretNotSetupException($user1),
             ],
-            'Present challenge' => [
+            'Setup 2FA not confirmed' => [
                 new TwoFactorJWTToken('test', 'password', '', 'test'),
                 $user2,
+                new TwoFactorSecretNotSetupException($user2),
+            ],
+            'Verify if presented but not confirmed' => [
+                new TwoFactorJWTToken('test', 'password', '654321', 'test'),
+                $user2,
+            ],
+            'Present challenge' => [
+                new TwoFactorJWTToken('test', 'password', '', 'test'),
+                $user3,
                 new TwoFactorAuthenticationMissingException(),
             ],
             'Incorrect code' => [
                 new TwoFactorJWTToken('test', 'password', '123456', 'test'),
-                $user2,
+                $user3,
                 new BadCredentialsException(),
             ],
             'Correct code' => [
                 new TwoFactorJWTToken('test', 'password', '654321', 'test'),
-                $user2,
+                $user3,
             ],
         ];
     }

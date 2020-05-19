@@ -11,6 +11,8 @@ use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
 use ConnectHolland\SecureJWT\Event\SetupTwoFactorAuthenticationEvent;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
+use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,7 +40,18 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         return [
             SetupTwoFactorAuthenticationEvent::NAME => 'provideQRCode',
+            Events::AUTHENTICATION_SUCCESS          => 'confirm2Fa',
         ];
+    }
+
+    public function confirm2Fa(AuthenticationSuccessEvent $event): void
+    {
+        /** @var TwoFactorUserInterface $user */
+        $user = $event->getUser();
+        if (false === $user->isGoogleAuthenticatorConfirmed()) {
+            $user->setGoogleAuthenticatorConfirmed(true);
+            $this->doctrine->getManager()->flush();
+        }
     }
 
     public function provideQRCode(SetupTwoFactorAuthenticationEvent $event): void
