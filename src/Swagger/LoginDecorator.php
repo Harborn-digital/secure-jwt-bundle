@@ -69,6 +69,12 @@ class LoginDecorator implements NormalizerInterface
                                         'result' => [
                                             'type' => 'string',
                                         ],
+                                        'qr' => [
+                                            'type' => 'string',
+                                        ],
+                                        'message' => [
+                                            'type' => 'string',
+                                        ],
                                     ],
                                     'example' => [
                                         'result' => 'ok',
@@ -90,20 +96,13 @@ class LoginDecorator implements NormalizerInterface
                                         'result' => [
                                             'type' => 'string',
                                         ],
-                                        'message' => [
-                                            'type' => 'string',
-                                        ],
                                         'status' => [
-                                            'type' => 'string',
-                                        ],
-                                        'qr' => [
                                             'type' => 'string',
                                         ],
                                     ],
                                     'example' => [
                                         'result'  => 'ok',
-                                        'message' => 'use provided QR code to set up two factor authentication',
-                                        'qr'      => 'QR code (data URL)',
+                                        'status'  => 'two factor authentication required',
                                     ],
                                 ],
                             ],
