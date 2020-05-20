@@ -119,9 +119,6 @@ class LoginDecorator implements NormalizerInterface
                                     'username',
                                     'password',
                                 ],
-                                'optional' => [
-                                    'challenge',
-                                ],
                                 'properties' => [
                                     'username' => [
                                         'type' => 'string',
