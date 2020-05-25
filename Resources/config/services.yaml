@@ -9,3 +9,8 @@ services:
 
     ConnectHolland\SecureJWTBundle\:
         resource: '../../src/{EventSubscriber,Handler,Security}'
+
+    ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator:
+        decorates: 'api_platform.swagger.normalizer.api_gateway'
+        arguments: [ '@ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator.inner' ]
+        autoconfigure: false
