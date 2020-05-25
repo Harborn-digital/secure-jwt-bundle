@@ -10,8 +10,10 @@ namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider;
 use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
 use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -25,11 +27,14 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
 {
     private GoogleAuthenticatorInterface $googleAuthenticator;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, GoogleAuthenticatorInterface $googleAuthenticator, bool $hideUserNotFoundExceptions = true)
+    private MessageBusInterface $messageBus;
+
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, GoogleAuthenticatorInterface $googleAuthenticator, MessageBusInterface $messageBus, bool $hideUserNotFoundExceptions = true)
     {
         parent::__construct($userProvider, $userChecker, 'two_factor_jwt', $encoderFactory, $hideUserNotFoundExceptions);
 
         $this->googleAuthenticator = $googleAuthenticator;
+        $this->messageBus          = $messageBus;
     }
 
     public function supports(TokenInterface $token): bool
@@ -53,6 +58,9 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         if ('' === $token->getTwoFactorChallenge()) {
             throw $user->isGoogleAuthenticatorConfirmed() ? new TwoFactorAuthenticationMissingException('Please provide two factor code to continue login') : new TwoFactorSecretNotSetupException($user, 'Please set up two factor auth app');
         }
+
+        // Will throw an exception to setup 2fa if the recovery code is valid
+        $this->messageBus->dispatch(new RecoverSecret($user, $token->getTwoFactorChallenge()));
 
         if (!$this->googleAuthenticator->checkCode($user, $token->getTwoFactorChallenge())) {
             throw new BadCredentialsException('Incorrect challenge');
