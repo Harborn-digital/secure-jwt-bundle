@@ -5,10 +5,10 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Fixture;
+namespace ConnectHolland\SecureJWTBundle\Tests\Fixture;
 
-use ConnectHolland\SecureJWT\Security\Firewall\TwoFactorJWTListener;
-use ConnectHolland\SecureJWT\Security\Token\TwoFactorJWTToken;
+use ConnectHolland\SecureJWTBundle\Security\Firewall\TwoFactorJWTListener;
+use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

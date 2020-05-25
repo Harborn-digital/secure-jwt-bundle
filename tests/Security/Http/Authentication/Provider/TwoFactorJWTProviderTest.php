@@ -5,13 +5,13 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Security\Http\Authentication\Provider;
+namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication\Provider;
 
-use ConnectHolland\SecureJWT\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWT\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWT\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
-use ConnectHolland\SecureJWT\Security\Token\TwoFactorJWTToken;
-use ConnectHolland\SecureJWT\Tests\Fixture\User;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
+use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
+use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

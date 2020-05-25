@@ -5,7 +5,7 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Message;
+namespace ConnectHolland\SecureJWTBundle\Message;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 

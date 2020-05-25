@@ -1,6 +1,46 @@
 # secure-jwt
 Library that makes JWT more secure
 
+## Install
+Installation is not fluent and error free yet, but it is easy to work around:
+
+```bash
+composer require connectholland/secure-jwt-bundle
+```
+
+Will give error in post installation:
+
+```
+Cannot autowire service "ConnectHolland\SecureJWTBundle\EventSubscriber\LoginSubscriber": argument "$googleAuthenticator" of method "__construct()" references class "Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator" but no such service exists.
+```
+
+Configure scheb twofactor Google:
+
+In the `scheb_two_factor.yaml` file:
+
+```yaml
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    google:
+        enabled: true
+        server_name: Secure Server
+        issuer: Connect Holland
+        digits: 6
+        window: 1
+```
+
+Run
+
+```bash
+composer require connectholland/secure-jwt-bundle
+```
+
+Again to finish the installation. 
+
+BTW1: Installation and configuration of the scheb twofactor bundle before installation of this bundle will also prevent this error. 
+BTW2: of course a PR that fixes these issues is welcome :)
+
 ## Cookie storage
 Tokens in local storage are insecure, so if you use tokens from a web interface you should store them somewhere else. A secure cookie is a good location. Configure cookie storage as follows:
 
@@ -34,7 +74,7 @@ In the `security.yaml` config file:
         anonymous: true
         json_login:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
+            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
             failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 ```
 
@@ -48,12 +88,12 @@ In the `doctrine.yaml` file:
 doctrine:
     orm:
         mappings:
-            ConnectHolland\SecureJWT:
-                is_bundle: false
+            ConnectHolland\SecureJWTBundle:
+                is_bundle: true
                 type: annotation
-                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Entity'
-                prefix: 'ConnectHolland\SecureJWT\Entity'
-                alias: SecureJWT
+                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Entity'
+                prefix: 'ConnectHolland\SecureJWTBundle\Entity'
+                alias: SecureJWTBundle
 ```
 
 And run migrations:
@@ -69,7 +109,7 @@ In the `api_platform.yaml` file:
 ```yaml
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt/src/Message']
+        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Message']
 ```
 
 Of course do not remove other required paths that might already be in the `paths` configuration.
@@ -95,7 +135,7 @@ In the `security.yaml` file:
         anonymous: true
         guard:
             authenticators:
-                - ConnectHolland\SecureJWT\Security\Guard\JWTTokenAuthenticator
+                - ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator
 ```
 
 ## Two Factor Authentication in JWT
@@ -127,20 +167,13 @@ In the `security.yaml` file:
         anonymous: true        
         two_factor_jwt:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler
-            failure_handler:          ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationFailureHandler
-```
-
-And load the required services in `services.yaml`:
-
-```yaml
-imports:
-    - { resource: '%kernel.project_dir%/vendor/connectholland/secure-jwt/config/services.yaml' }
+            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+            failure_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler
 ```
 
 ### Implement the right interfaces
 
-Your User object should implement `ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface`.
+Your User object should implement `ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface`.
 
 ## Using 2FA
 

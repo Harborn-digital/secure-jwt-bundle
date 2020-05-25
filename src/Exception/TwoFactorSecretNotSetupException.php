@@ -5,9 +5,9 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Exception;
+namespace ConnectHolland\SecureJWTBundle\Exception;
 
-use ConnectHolland\SecureJWT\Entity\TwoFactorUserInterface;
+use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Throwable;
 

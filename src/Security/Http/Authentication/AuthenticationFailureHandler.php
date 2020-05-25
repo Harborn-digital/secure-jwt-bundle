@@ -5,11 +5,11 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Security\Http\Authentication;
+namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWT\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWT\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWT\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationFailureHandler as LexikAuthenticationFailureHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

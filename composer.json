@@ -1,7 +1,7 @@
 {
-    "name": "connectholland/secure-jwt",
+    "name": "connectholland/secure-jwt-bundle",
     "type": "library",
-    "description": "Library to increate security of JWT based security",
+    "description": "Bundle to increase security of JWT based security",
     "license": "proprietary",
     "require": {
         "php": "^7.4",
@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ConnectHolland\\SecureJWT\\": "src/"
+            "ConnectHolland\\SecureJWTBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ConnectHolland\\SecureJWT\\Tests\\": "tests/"
+            "ConnectHolland\\SecureJWTBundle\\Tests\\": "tests/"
         }
     },
     "require-dev": {

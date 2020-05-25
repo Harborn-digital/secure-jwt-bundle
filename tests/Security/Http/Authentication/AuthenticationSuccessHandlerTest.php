@@ -5,9 +5,9 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Tests\Security\Http\Authentication;
+namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWT\Security\Http\Authentication\AuthenticationSuccessHandler;
+use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;

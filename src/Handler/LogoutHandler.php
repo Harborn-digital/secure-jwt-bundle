@@ -5,10 +5,10 @@
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWT\Handler;
+namespace ConnectHolland\SecureJWTBundle\Handler;
 
-use ConnectHolland\SecureJWT\Entity\InvalidToken;
-use ConnectHolland\SecureJWT\Message\Logout;
+use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
+use ConnectHolland\SecureJWTBundle\Message\Logout;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
