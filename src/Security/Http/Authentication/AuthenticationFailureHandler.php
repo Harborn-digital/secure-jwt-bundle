@@ -10,14 +10,26 @@ namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationFailureHandler as LexikAuthenticationFailureHandler;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class AuthenticationFailureHandler extends LexikAuthenticationFailureHandler
+class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterface
 {
+    private AuthenticationFailureHandlerInterface $lexikAuthenticationFailureHandler;
+
+    private EventDispatcherInterface $dispatcher;
+
+    public function __construct(AuthenticationFailureHandlerInterface $lexikAuthenticationFailureHandler, EventDispatcherInterface $dispatcher)
+    {
+        $this->lexikAuthenticationFailureHandler = $lexikAuthenticationFailureHandler;
+        $this->dispatcher                        = $dispatcher;
+    }
+
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ($exception instanceof TwoFactorSecretNotSetupException) {
@@ -31,7 +43,13 @@ class AuthenticationFailureHandler extends LexikAuthenticationFailureHandler
             return new JsonResponse(['result' => 'ok', 'status' => 'two factor authentication required'], Response::HTTP_UNAUTHORIZED);
         }
 
-        // Ignore coverage because this is just calling the parent
-        return parent::onAuthenticationFailure($request, $exception); // @codeCoverageIgnore
+        // Ignore coverage because this is just calling the decorated service
+        $response = $this->lexikAuthenticationFailureHandler->onAuthenticationFailure($request, $exception); // @codeCoverageIgnore
+
+        if ($exception instanceof InvalidTokenException) {
+            $response->headers->clearCookie('BEARER');
+        }
+
+        return $response;
     }
 }
