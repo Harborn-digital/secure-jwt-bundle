@@ -10,6 +10,7 @@ namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler as LexikAuthenticationSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -28,7 +29,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()),))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -44,7 +45,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()),))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -61,7 +62,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccessWithGivenJWT()
     {
-        $response = (new AuthenticationSuccessHandler($this->getJWTManager(), $this->getDispatcher()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()),))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
