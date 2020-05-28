@@ -50,7 +50,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     }
 
     /**
-     * Add fields to the response payload. 
+     * Add fields to the response payload.
      */
     public function addResponsePayload(string $key, string $value): void
     {

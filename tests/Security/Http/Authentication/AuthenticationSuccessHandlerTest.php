@@ -8,6 +8,7 @@
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler as LexikAuthenticationSuccessHandler;
@@ -29,7 +30,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), ))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -39,13 +40,16 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $cookies = $response->headers->getCookies();
         $this->assertArrayNotHasKey('token', $content);
         $this->assertArrayHasKey('result', $content);
+        $this->assertArrayHasKey('payload', $content);
+        $this->assertArrayHasKey('user', $content['payload']);
+        $this->assertSame('example@example.org', $content['payload']['user']);
         $this->assertCount(1, $cookies);
         $this->assertSame('secrettoken', $cookies[0]->getValue());
     }
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), ))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -62,7 +66,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccessWithGivenJWT()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), ))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -75,6 +79,18 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertArrayHasKey('result', $content);
         $this->assertCount(1, $cookies);
         $this->assertSame('jwt', $cookies[0]->getValue());
+    }
+
+    private function getEncoder(): JWTEncoderInterface
+    {
+        $encoder = $this->createMock(JWTEncoderInterface::class);
+
+        $encoder
+            ->expects($this->once())
+            ->method('decode')
+            ->willReturn(['user' => 'example@example.org']);
+
+        return $encoder;
     }
 
     /**
