@@ -7,6 +7,7 @@
 
 namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +19,14 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 {
     private AuthenticationSuccessHandlerInterface $successHandler;
 
-    public function __construct(AuthenticationSuccessHandlerInterface $successHandler)
+    private JWTEncoderInterface $jwtEncoder;
+
+    private array $responsePayload = [];
+
+    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder)
     {
         $this->successHandler = $successHandler;
+        $this->jwtEncoder     = $jwtEncoder;
     }
 
     /**
@@ -28,10 +34,11 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     public function handleAuthenticationSuccess(UserInterface $user, $jwt = null): JsonResponse
     {
-        $jsonWithToken = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
-        $response      = new JsonResponse(['result' => 'ok']);
-        $data          = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
+        $jsonWithToken         = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
+        $data                  = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $decoded               = $this->jwtEncoder->decode($data['token']);
+        $this->responsePayload = array_merge($this->responsePayload, $decoded);
+        $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
         $response->headers->setCookie(new Cookie('BEARER', $data['token'], 0, '/', null, true));
 
         return  $response;
@@ -40,5 +47,13 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
         return $this->handleAuthenticationSuccess($token->getUser());
+    }
+
+    /**
+     * Add fields to the response payload. 
+     */
+    public function addResponsePayload(string $key, string $value): void
+    {
+        $this->responsePayload[$key] = $value;
     }
 }
