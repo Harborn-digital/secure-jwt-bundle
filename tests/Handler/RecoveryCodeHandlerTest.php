@@ -64,7 +64,7 @@ class RecoveryCodeHandlerTest extends TestCase
         $handler = new RecoveryCodeHandler($doctrine, $tokenStorage);
         $codes   = $handler(new RecoveryCode(5));
 
-        $this->assertCount(5, $codes);
+        $this->assertCount(5, $codes->getCodes());
         foreach ($codes as $code) {
             $this->assertInstanceOf(RecoveryCodeEntity::class, $code);
             $this->assertSame('verysecret!', $code->getSecret());

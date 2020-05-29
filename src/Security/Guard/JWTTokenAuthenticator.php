@@ -45,7 +45,7 @@ class JWTTokenAuthenticator extends BaseAuthenticator
         if ($repository->findOneBy(['token' => $token]) instanceof InvalidToken) {
             throw new InvalidTokenException('Invalidated JWT Token');
         }
-        
+
         return parent::getCredentials($request);
     }
 }

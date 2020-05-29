@@ -46,7 +46,6 @@ class RecoveryCodeHandler implements MessageHandlerInterface
                     array_fill(0, $recoveryCode->getCount(), null)
                 )
             );
-
         }
 
         throw new \RuntimeException('Unable to create recovery codes for non-2fa users');
