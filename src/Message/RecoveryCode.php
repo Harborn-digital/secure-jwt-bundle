@@ -8,6 +8,7 @@
 namespace ConnectHolland\SecureJWTBundle\Message;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
 
 /**
  * Create recovery codes for the current user. Will invalidate any existing codes for that user.
@@ -17,7 +18,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     collectionOperations={
  *       "post"={"status"=200}
  *     },
- *     itemOperations={}
+ *     itemOperations={},
+ *     output=GeneratedCodes::class
  * )
  *
  * @codeCoverageIgnore Trivial class with only a getter
