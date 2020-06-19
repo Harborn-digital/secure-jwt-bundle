@@ -1,4 +1,12 @@
 services:
+    ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler:
+        decorates: 'lexik_jwt_authentication.handler.authentication_failure'
+        arguments:
+            $lexikAuthenticationFailureHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler.inner'
+            $dispatcher: '@event_dispatcher'
+        autoconfigure: false
+        autowire: false
+
     connectholland.secure_jwt.two_factor_jwt.listener:
         class: ConnectHolland\SecureJWTBundle\Security\Firewall\TwoFactorJWTListener
         parent: security.authentication.listener.abstract
@@ -7,4 +15,3 @@ services:
     connectholland.secure_jwt.two_factor_jwt.provider:
         class: ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider
         autowire: true
-

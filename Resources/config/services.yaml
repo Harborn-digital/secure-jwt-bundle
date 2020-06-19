@@ -9,6 +9,7 @@ services:
 
     ConnectHolland\SecureJWTBundle\:
         resource: '../../src/{EventSubscriber,Handler,Security}'
+        exclude: '../../src/Security/Http/Authentication/AuthenticationFailureHandler.php'
 
     ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator:
         decorates: 'api_platform.swagger.normalizer.api_gateway'
