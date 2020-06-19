@@ -20,14 +20,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterface
 {
-    private AuthenticationFailureHandlerInterface $lexikAuthenticationFailureHandler;
+    private AuthenticationFailureHandlerInterface $failureHandler;
 
     private EventDispatcherInterface $dispatcher;
 
-    public function __construct(AuthenticationFailureHandlerInterface $lexikAuthenticationFailureHandler, EventDispatcherInterface $dispatcher)
+    public function __construct(AuthenticationFailureHandlerInterface $failureHandler, EventDispatcherInterface $dispatcher)
     {
-        $this->lexikAuthenticationFailureHandler = $lexikAuthenticationFailureHandler;
-        $this->dispatcher                        = $dispatcher;
+        $this->failureHandler = $failureHandler;
+        $this->dispatcher     = $dispatcher;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
@@ -44,7 +44,7 @@ class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterf
         }
 
         // Ignore coverage because this is just calling the decorated service
-        $response = $this->lexikAuthenticationFailureHandler->onAuthenticationFailure($request, $exception); // @codeCoverageIgnore
+        $response = $this->failureHandler->onAuthenticationFailure($request, $exception); // @codeCoverageIgnore
 
         if ($exception instanceof InvalidTokenException) {
             $response->headers->clearCookie('BEARER');

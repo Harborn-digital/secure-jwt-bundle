@@ -2,8 +2,16 @@ services:
     ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler:
         decorates: 'lexik_jwt_authentication.handler.authentication_failure'
         arguments:
-            $lexikAuthenticationFailureHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler.inner'
+            $failureHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler.inner'
             $dispatcher: '@event_dispatcher'
+        autoconfigure: false
+        autowire: false
+
+    ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler:
+        decorates: 'lexik_jwt_authentication.handler.authentication_success'
+        arguments:
+            $successHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler.inner'
+            $jwtEncoder: '@Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface'
         autoconfigure: false
         autowire: false
 
