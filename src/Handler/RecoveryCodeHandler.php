@@ -7,6 +7,7 @@
 
 namespace ConnectHolland\SecureJWTBundle\Handler;
 
+use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
 use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode as RecoveryCodeEntity;
 use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use ConnectHolland\SecureJWTBundle\Message\RecoveryCode;
@@ -32,16 +33,18 @@ class RecoveryCodeHandler implements MessageHandlerInterface
     /**
      * Invalidate codes for logged on user and create new codes.
      */
-    public function __invoke(RecoveryCode $recoveryCode): array
+    public function __invoke(RecoveryCode $recoveryCode): GeneratedCodes
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
         if ($user instanceof TwoFactorUserInterface) {
             $this->invalidateCurrentCodes($user->getGoogleAuthenticatorSecret());
 
-            return array_map(
-                fn () => $this->createCode($user->getGoogleAuthenticatorSecret()),
-                array_fill(0, $recoveryCode->getCount(), null)
+            return new GeneratedCodes(
+                array_map(
+                    fn () => $this->createCode($user->getGoogleAuthenticatorSecret())->getCode(),
+                    array_fill(0, $recoveryCode->getCount(), null)
+                )
             );
         }
 
