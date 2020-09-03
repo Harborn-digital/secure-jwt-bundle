@@ -23,10 +23,13 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
     private array $responsePayload = [];
 
-    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder)
+    private string $sameSite;
+
+    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite)
     {
         $this->successHandler = $successHandler;
         $this->jwtEncoder     = $jwtEncoder;
+        $this->sameSite       = $sameSite;
     }
 
     /**
@@ -39,7 +42,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $decoded               = $this->jwtEncoder->decode($data['token']);
         $this->responsePayload = array_merge($this->responsePayload, $decoded);
         $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
-        $response->headers->setCookie(new Cookie('BEARER', $data['token'], 0, '/', null, true, true, false, null));
+        $response->headers->setCookie(new Cookie('BEARER', $data['token'], 0, '/', null, true, true, false, $this->sameSite));
 
         return  $response;
     }

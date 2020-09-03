@@ -12,6 +12,7 @@ services:
         arguments:
             $successHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler.inner'
             $jwtEncoder: '@Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface'
+            $sameSite: '%env(default:strict:JWT_COOKIE_SAMESITE)%'
         autoconfigure: false
         autowire: false
 
