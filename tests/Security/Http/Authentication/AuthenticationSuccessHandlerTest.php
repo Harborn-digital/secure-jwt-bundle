@@ -30,7 +30,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -49,7 +49,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -64,9 +64,12 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertSame('secrettoken', $cookies[0]->getValue());
     }
 
-    public function testHandleAuthenticationSuccessWithGivenJWT()
+    /**
+     * @dataProvider provideSameSiteOptions
+     */
+    public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -79,6 +82,9 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertArrayHasKey('result', $content);
         $this->assertCount(1, $cookies);
         $this->assertSame('jwt', $cookies[0]->getValue());
+        $this->assertSame($sameSite, $cookies[0]->getSameSite());
+        $this->assertTrue($cookies[0]->isHttpOnly());
+        $this->assertTrue($cookies[0]->isSecure());
     }
 
     private function getEncoder(): JWTEncoderInterface
@@ -169,5 +175,14 @@ class AuthenticationSuccessHandlerTest extends TestCase
             );
 
         return $dispatcher;
+    }
+
+    public function provideSameSiteOptions(): array
+    {
+        return [
+            ['strict'],
+            ['lax'],
+            ['none'],
+        ];
     }
 }
