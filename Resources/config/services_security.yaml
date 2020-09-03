@@ -1,3 +1,6 @@
+parameters:
+  cookie_same_site_default: 'strict'
+
 services:
     ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler:
         decorates: 'lexik_jwt_authentication.handler.authentication_failure'
@@ -12,7 +15,7 @@ services:
         arguments:
             $successHandler: '@ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler.inner'
             $jwtEncoder: '@Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface'
-            $sameSite: '%env(default:strict:JWT_COOKIE_SAMESITE)%'
+            $sameSite: '%env(default:cookie_same_site_default:JWT_COOKIE_SAMESITE)%'
         autoconfigure: false
         autowire: false
 
