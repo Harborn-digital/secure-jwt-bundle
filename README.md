@@ -1,5 +1,5 @@
-# secure-jwt
-Library that makes JWT more secure
+# Secure JWT Bundle
+Symfony bundle that makes JWT more secure
 
 ## Install
 Installation is not fluent and error free yet, but it is easy to work around:
@@ -38,7 +38,7 @@ composer require connectholland/secure-jwt-bundle
 
 Again to finish the installation. 
 
-BTW1: Installation and configuration of the scheb twofactor bundle before installation of this bundle will also prevent this error. 
+BTW1: Installation and configuration of the scheb twofactor bundle before installation of this bundle will also prevent this error.<br/> 
 BTW2: of course a PR that fixes these issues is welcome :)
 
 ## Cookie storage

@@ -1,8 +1,8 @@
 <?php
 
 /*
- * This file is part of the Connect Holland Secure JWT package.
- * (c) Connect Holland.
+ * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
+ * Copyright (c) 2020 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Message;

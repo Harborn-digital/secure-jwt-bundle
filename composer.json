@@ -13,7 +13,7 @@
         "api-platform/core": "^2.5",
         "scheb/two-factor-bundle": "^4.16",
         "endroid/qr-code-bundle": "^3.4",
-        "friendsofsymfony/rest-bundle": "3.0.0-beta1"
+        "friendsofsymfony/rest-bundle": "^3.0"
     },
     "autoload": {
         "psr-4": {
