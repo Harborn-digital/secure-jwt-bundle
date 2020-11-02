@@ -62,6 +62,8 @@ lexik_jwt_authentication:
             cookie:
                 enabled: true
                 name:    BEARER
+                set_cookies:
+                    BEARER: ~
 ```
 
 ### Make sure the token is set as a secure cookie
@@ -74,7 +76,7 @@ In the `security.yaml` config file:
         anonymous: true
         json_login:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+            success_handler:          lexik_jwt_authentication.handler.authentication_success
             failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 ```
 
