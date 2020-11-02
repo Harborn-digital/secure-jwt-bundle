@@ -15,6 +15,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
+/**
+ * @deprecated Use lexik default instead
+ **/
 class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
     private AuthenticationSuccessHandlerInterface $successHandler;
