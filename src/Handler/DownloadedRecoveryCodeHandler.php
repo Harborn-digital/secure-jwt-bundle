@@ -30,29 +30,29 @@ class DownloadedRecoveryCodeHandler implements MessageHandlerInterface
     }
 
     /**
-     * Invalidate codes for logged on user and create new codes.
+     * Set downloaded to true on recovery code(s) for logged on user.
      */
     public function __invoke(DownloadedRecoveryCode $recoveryCode): void
     {
-        $user = $this->doctrine->getRepository(RecoveryCodeEntity::class)->findBy(['secret' => $recoveryCode->getValue()]);
+        $user = $this->tokenStorage->getToken()->getUser();
 
         if ($user instanceof TwoFactorUserInterface) {
-            $this->setDownloaded($user->getGoogleAuthenticatorSecret());
+            $this->setDownloaded($user->getGoogleAuthenticatorSecret(), $recoveryCode->getValue());
+        } else {
+            throw new \RuntimeException('Unable to set downloaded on recovery codes for non-2fa users');
         }
-
-        throw new \RuntimeException('Unable to create recovery codes for non-2fa users');
     }
 
     /**
      * Set downloaded to true on recovery code(s) of current User.
      */
-    private function setDownloaded(string $secret): void
+    private function setDownloaded(string $secret, bool $value): void
     {
         $currentCodes = $this->doctrine->getRepository(RecoveryCodeEntity::class)->findBy(['secret' => $secret]);
-        foreach($currentCodes as $code) {
-            $code->setDownloaded(true);
-        }
         $manager = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
+
+        array_walk($currentCodes, fn (RecoveryCodeEntity $recoveryCode) => $recoveryCode->setDownloaded($value));
+
         $manager->flush();
     }
 }
