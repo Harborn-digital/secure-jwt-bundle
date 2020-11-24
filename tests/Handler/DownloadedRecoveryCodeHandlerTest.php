@@ -28,6 +28,7 @@ class DownloadedRecoveryCodeHandlerTest extends TestCase
         $repository = $this->createMock(EntityRepository::class);
         $tokenStorage = new TokenStorage();
         $user = new User();
+        $recoveryCode = new RecoveryCodeEntity();
 
         $user->setGoogleAuthenticatorSecret('verysecret!');
         $tokenStorage->setToken(new JWTUserToken([], $user));
@@ -36,9 +37,9 @@ class DownloadedRecoveryCodeHandlerTest extends TestCase
             ->method('findBy')
             ->willReturn(
                 [
-                    new RecoveryCodeEntity(),
-                    new RecoveryCodeEntity(),
-                    new RecoveryCodeEntity(),
+                    $recoveryCode,
+                    $recoveryCode,
+                    $recoveryCode,
                 ]
             );
 
@@ -56,5 +57,6 @@ class DownloadedRecoveryCodeHandlerTest extends TestCase
 
         $handler = new DownloadedRecoveryCodeHandler($doctrine, $tokenStorage);
         $handler(new DownloadedRecoveryCode(true));
+        $this->assertSame(true, $recoveryCode->isDownloaded());
     }
 }

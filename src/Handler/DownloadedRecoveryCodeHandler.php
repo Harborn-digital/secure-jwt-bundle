@@ -7,7 +7,7 @@
 
 namespace ConnectHolland\SecureJWTBundle\Handler;
 
-use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode as RecoveryCodeEntity;
+use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode;
 use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use ConnectHolland\SecureJWTBundle\Message\DownloadedRecoveryCode;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -44,14 +44,14 @@ class DownloadedRecoveryCodeHandler implements MessageHandlerInterface
     }
 
     /**
-     * Set downloaded to true on recovery code(s) of current User.
+     * Set downloaded to true on recovery code(s) for the given User.
      */
     private function setDownloaded(string $secret, bool $value): void
     {
-        $currentCodes = $this->doctrine->getRepository(RecoveryCodeEntity::class)->findBy(['secret' => $secret]);
-        $manager = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
+        $currentCodes = $this->doctrine->getRepository(RecoveryCode::class)->findBy(['secret' => $secret]);
+        $manager = $this->doctrine->getManagerForClass(RecoveryCode::class);
 
-        array_walk($currentCodes, fn (RecoveryCodeEntity $recoveryCode) => $recoveryCode->setDownloaded($value));
+        array_walk($currentCodes, fn (RecoveryCode $recoveryCode) => $recoveryCode->setDownloaded($value));
 
         $manager->flush();
     }

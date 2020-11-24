@@ -67,7 +67,7 @@ class RecoveryCode
         $this->secret = $secret;
     }
 
-    public function getDownloaded(): bool
+    public function isDownloaded(): bool
     {
         return $this->downloaded;
     }
