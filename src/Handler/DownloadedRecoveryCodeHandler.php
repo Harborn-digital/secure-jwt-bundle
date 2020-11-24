@@ -25,7 +25,7 @@ class DownloadedRecoveryCodeHandler implements MessageHandlerInterface
      */
     public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine     = $doctrine;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -49,7 +49,7 @@ class DownloadedRecoveryCodeHandler implements MessageHandlerInterface
     private function setDownloaded(string $secret, bool $value): void
     {
         $currentCodes = $this->doctrine->getRepository(RecoveryCode::class)->findBy(['secret' => $secret]);
-        $manager = $this->doctrine->getManagerForClass(RecoveryCode::class);
+        $manager      = $this->doctrine->getManagerForClass(RecoveryCode::class);
 
         array_walk($currentCodes, fn (RecoveryCode $recoveryCode) => $recoveryCode->setDownloaded($value));
 

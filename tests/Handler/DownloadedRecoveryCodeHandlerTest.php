@@ -17,17 +17,16 @@ use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Exception\RuntimeException;
 
 class DownloadedRecoveryCodeHandlerTest extends TestCase
 {
     public function testSetCodesDownloadedSuccessful(): void
     {
-        $doctrine = $this->createMock(ManagerRegistry::class);
-        $manager = $this->createMock(EntityManager::class);
-        $repository = $this->createMock(EntityRepository::class);
+        $doctrine     = $this->createMock(ManagerRegistry::class);
+        $manager      = $this->createMock(EntityManager::class);
+        $repository   = $this->createMock(EntityRepository::class);
         $tokenStorage = new TokenStorage();
-        $user = new User();
+        $user         = new User();
         $recoveryCode = new RecoveryCodeEntity();
 
         $user->setGoogleAuthenticatorSecret('verysecret!');

@@ -8,7 +8,6 @@
 namespace ConnectHolland\SecureJWTBundle\Message;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
 
 /**
  * Create recovery codes for the current user. Will invalidate any existing codes for that user.
@@ -23,7 +22,6 @@ use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
  *
  * @codeCoverageIgnore Trivial class with only a getter
  */
-
 class DownloadedRecoveryCode
 {
     private bool $value;
