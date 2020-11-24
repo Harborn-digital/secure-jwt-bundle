@@ -13,7 +13,8 @@
         "api-platform/core": "^2.5",
         "scheb/two-factor-bundle": "^4.16",
         "endroid/qr-code-bundle": "^3.4",
-        "friendsofsymfony/rest-bundle": "^3.0"
+        "friendsofsymfony/rest-bundle": "^3.0",
+        "gesdinet/jwt-refresh-token-bundle": "^0.9.1"
     },
     "autoload": {
         "psr-4": {
