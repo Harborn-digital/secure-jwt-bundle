@@ -22,25 +22,23 @@ class DownloadedRecoveryCodeHandlerTest extends TestCase
 {
     public function testSetCodesDownloadedSuccessful(): void
     {
-        $doctrine     = $this->createMock(ManagerRegistry::class);
-        $manager      = $this->createMock(EntityManager::class);
-        $repository   = $this->createMock(EntityRepository::class);
-        $tokenStorage = new TokenStorage();
-        $user         = new User();
-        $recoveryCode = new RecoveryCodeEntity();
+        $doctrine      = $this->createMock(ManagerRegistry::class);
+        $manager       = $this->createMock(EntityManager::class);
+        $repository    = $this->createMock(EntityRepository::class);
+        $tokenStorage  = new TokenStorage();
+        $user          = new User();
+        $recoveryCodes = [
+            new RecoveryCodeEntity(),
+            new RecoveryCodeEntity(),
+            new RecoveryCodeEntity()
+        ];
 
         $user->setGoogleAuthenticatorSecret('verysecret!');
         $tokenStorage->setToken(new JWTUserToken([], $user));
 
         $repository
             ->method('findBy')
-            ->willReturn(
-                [
-                    $recoveryCode,
-                    $recoveryCode,
-                    $recoveryCode,
-                ]
-            );
+            ->willReturn($recoveryCodes);
 
         $manager
             ->expects($this->exactly(1))
@@ -56,6 +54,8 @@ class DownloadedRecoveryCodeHandlerTest extends TestCase
 
         $handler = new DownloadedRecoveryCodeHandler($doctrine, $tokenStorage);
         $handler(new DownloadedRecoveryCode(true));
-        $this->assertSame(true, $recoveryCode->isDownloaded());
+        foreach ($recoveryCodes as $code) {
+            $this->assertSame(true, $code->isDownloaded());
+        }
     }
 }
