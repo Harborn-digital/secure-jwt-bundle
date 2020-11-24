@@ -13,8 +13,7 @@
         "api-platform/core": "^2.5",
         "scheb/two-factor-bundle": "^4.16",
         "endroid/qr-code-bundle": "^3.4",
-        "friendsofsymfony/rest-bundle": "^3.0",
-        "gesdinet/jwt-refresh-token-bundle": "^0.9.1"
+        "friendsofsymfony/rest-bundle": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -28,5 +27,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.1"
+    },
+    "suggest": {
+        "gesdinet/jwt-refresh-token-bundle": "Allows using the refresh token functionality"
     }
 }

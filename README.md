@@ -141,6 +141,7 @@ In the `security.yaml` file:
 ```
 
 ## Refresh token
+Can be implemented after requiring the suggested package.
 ### Configure refresh token route
 In the `routes.yaml` file:
 ```yaml
