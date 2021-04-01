@@ -58,7 +58,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     /**
      * Add fields to the response payload.
      */
-    public function addResponsePayload(string $key, string $value): void
+    public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
     }
