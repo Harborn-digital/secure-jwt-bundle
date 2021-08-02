@@ -45,6 +45,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertSame('example@example.org', $content['payload']['user']);
         $this->assertCount(1, $cookies);
         $this->assertSame('secrettoken', $cookies[0]->getValue());
+        $this->assertSame(1627902433, $cookies[0]->getExpiresTime());
     }
 
     public function testHandleAuthenticationSuccess()
@@ -94,7 +95,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $encoder
             ->expects($this->once())
             ->method('decode')
-            ->willReturn(['user' => 'example@example.org']);
+            ->willReturn(['user' => 'example@example.org', 'exp' => 1627902433]);
 
         return $encoder;
     }
