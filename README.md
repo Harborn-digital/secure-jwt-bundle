@@ -140,6 +140,35 @@ In the `security.yaml` file:
                 - ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator
 ```
 
+## Refresh token
+Can be implemented after requiring the suggested package.
+### Configure refresh token route
+In the `routes.yaml` file:
+```yaml
+gesdinet_jwt_refresh_token:
+  path:       /api/token/refresh
+  controller: gesdinet.jwtrefreshtoken::refresh
+```
+
+In the `security.yaml` file:
+```yaml
+    refresh:
+        pattern:  ^/token/refresh
+        stateless: true
+        anonymous: true
+
+    access_control:
+           - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+```
+
+### Configure Token duration and user identity field
+In the `config/packages/gesdinet_jwt_refresh_token.yaml` file:
+```yaml
+gesdinet_jwt_refresh_token:
+  ttl: 2592000 
+  user_identity_field: email 
+```
+
 ## Two Factor Authentication in JWT
 
 ### Configure Google Authenticator

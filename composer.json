@@ -27,5 +27,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.1"
+    },
+    "suggest": {
+        "gesdinet/jwt-refresh-token-bundle": "Allows using the refresh token functionality"
     }
 }
