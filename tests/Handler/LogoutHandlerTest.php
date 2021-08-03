@@ -14,6 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -44,6 +45,26 @@ class LogoutHandlerTest extends TestCase
 
         $this->handler->__invoke(new Logout());
     }
+
+    public function testRemovesCookie(): void
+    {
+        $this->tokenStorage->setToken(new JWTUserToken([], null, 'unit-test-token'));
+        $manager     = $this->createMock(EntityManager::class);
+
+        $this->doctrine
+            ->expects($this->once())
+            ->method('getManagerForClass')
+            ->willReturn($manager);
+
+        $response = $this->handler->__invoke(new Logout());
+        $this->assertInstanceOf(Response::class, $response);
+        $cookies = $response->headers->getCookies();
+
+        $this->assertCount(1, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame(1, $cookies[0]->getExpiresTime());
+    }
+
 
     public function testPersistsInvalidToken(): void
     {
