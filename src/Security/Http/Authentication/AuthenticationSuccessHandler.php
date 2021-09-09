@@ -7,6 +7,7 @@
 
 namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
+use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,15 +25,20 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
     private JWTEncoderInterface $jwtEncoder;
 
+    private RememberDeviceResolver $rememberDeviceResolver;
+
     private array $responsePayload = [];
 
     private string $sameSite;
 
-    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite)
+    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite, RememberDeviceResolver $rememberDeviceResolver)
     {
+        $this->rememberDeviceResolver = $rememberDeviceResolver;
         $this->successHandler = $successHandler;
         $this->jwtEncoder     = $jwtEncoder;
         $this->sameSite       = $sameSite;
+
+
     }
 
     /**
