@@ -77,10 +77,13 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         }
 
         $request = $this->requestStack->getCurrentRequest();
-        $rememberDeviceCookie = ($request->cookies->get("REMEMBER_DEVICE"));
 
-        if($this->checkRememberDeviceToken($rememberDeviceCookie, $user)){
-            return;
+        if(is_object($request)) {
+            $rememberDeviceCookie = ($request->cookies->get("REMEMBER_DEVICE"));
+
+            if($this->checkRememberDeviceToken($rememberDeviceCookie, $user)){
+                return;
+            }
         }
 
         if ('' === $token->getTwoFactorChallenge()) {

@@ -7,6 +7,7 @@
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
+use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
@@ -30,7 +31,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', new RememberDeviceResolver(["is_remembered"=>false])))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -50,7 +51,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', new RememberDeviceResolver(["is_remembered"=>false])))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -70,7 +71,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
      */
     public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, new RememberDeviceResolver(["is_remembered"=>false])))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);

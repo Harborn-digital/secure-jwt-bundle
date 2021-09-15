@@ -62,8 +62,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $response = $this->handleAuthenticationSuccess($token->getUser());
 
-        // TODO: remove ! (test purposes)
-        if (!$this->rememberDeviceResolver->getRememberDeviceStatus()) {
+        if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
 
             $rememberDeviceCookie = ($request->cookies->get('REMEMBER_DEVICE'));
 
