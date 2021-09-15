@@ -28,6 +28,14 @@ class RememberDeviceResolver
         return $this->configuration["expiry_days"];
     }
 
+    /**
+     * Change the configuration by passing a key-value array
+     */
+    public function setConfiguration(array $configuration): void
+    {
+        $this->configuration = $configuration;
+    }
+
 
 
 }

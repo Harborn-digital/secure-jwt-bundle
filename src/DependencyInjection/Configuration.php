@@ -4,8 +4,8 @@
 namespace ConnectHolland\SecureJWTBundle\DependencyInjection;
 
 
-    use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-    use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -22,14 +22,14 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                        ->booleanNode('is_remembered')
-                                ->defaultFalse()
-                            ->end()
-                            ->integerNode('expiry_days')
-                                ->min(0)
-                                ->defaultValue(30)
-                            ->end()
-                        ->end()
+                ->booleanNode('is_remembered')
+                    ->defaultFalse()
+                ->end()
+                ->integerNode('expiry_days')
+                    ->min(0)
+                    ->defaultValue(30)
+                ->end()
+            ->end()
             ->end()
         ;
 

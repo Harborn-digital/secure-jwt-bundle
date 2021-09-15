@@ -46,6 +46,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     public function handleAuthenticationSuccess(UserInterface $user, $jwt = null): JsonResponse
     {
+
         $jsonWithToken         = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
         $data                  = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $decoded               = $this->jwtEncoder->decode($data['token']);
@@ -53,12 +54,40 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
         $response->headers->setCookie(new Cookie('BEARER', $data['token'], $decoded['exp'], '/', null, true, true, false, $this->sameSite));
 
+
         return  $response;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
-        return $this->handleAuthenticationSuccess($token->getUser());
+        $response = $this->handleAuthenticationSuccess($token->getUser());
+
+        // TODO: remove ! (test purposes)
+        if (!$this->rememberDeviceResolver->getRememberDeviceStatus()) {
+
+            $rememberDeviceCookie = ($request->cookies->get('REMEMBER_DEVICE'));
+
+            if (is_null($rememberDeviceCookie) || $this->jwtEncoder->decode($rememberDeviceCookie)['exp'] > time()) {
+
+                // Remove cookie if expired
+                $response->headers->removeCookie('REMEMBER_DEVICE');
+
+                $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
+
+                $data = $this->jwtEncoder->encode([
+                    "exp" => $expiry_time,
+                    "user" => $request->request->get('username'),
+                ]);
+
+
+                // TODO: Add cookie to RememberDeviceToken table
+                $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, false, $this->sameSite));
+            }
+
+        }
+
+        return $response;
+
     }
 
     /**
@@ -68,4 +97,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $this->responsePayload[$key] = $value;
     }
+
+
 }
