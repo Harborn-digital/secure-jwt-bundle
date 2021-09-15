@@ -66,9 +66,9 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
             if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] > time()) {
 
-
                 // Remove cookie if expired
                 $response->headers->removeCookie('REMEMBER_DEVICE');
+                // TODO: Add to InvalidToken table
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
                 $username = $request->request->get('username');

@@ -98,11 +98,6 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         }
     }
 
-    // Check if valid:
-    //      Token exists
-    //      Token is not expired
-    //      Username extracted from the token is the same as the current user
-    //      Check if token does not exist in the InvalidToken database
     private function checkRememberDeviceToken($token, $user)
     {
         if(!is_null($token) && $this->jwtEncoder->decode($token)['exp'] > time() && $this->jwtEncoder->decode($token)['user'] === $user->getUsername()){
