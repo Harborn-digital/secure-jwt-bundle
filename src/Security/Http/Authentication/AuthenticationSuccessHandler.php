@@ -64,18 +64,18 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
 
-            $rememberDeviceCookie = ($request->cookies->get('REMEMBER_DEVICE'));
+            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] > time()) {
 
-            if (is_null($rememberDeviceCookie) || $this->jwtEncoder->decode($rememberDeviceCookie)['exp'] > time()) {
 
                 // Remove cookie if expired
                 $response->headers->removeCookie('REMEMBER_DEVICE');
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
+                $username = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
                     "exp" => $expiry_time,
-                    "user" => $request->request->get('username'),
+                    "user" => $username,
                 ]);
 
 

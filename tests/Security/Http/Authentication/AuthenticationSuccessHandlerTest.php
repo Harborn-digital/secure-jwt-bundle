@@ -31,7 +31,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', new RememberDeviceResolver(["is_remembered"=>false])))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -51,7 +51,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', new RememberDeviceResolver(["is_remembered"=>false])))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver()))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -71,7 +71,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
      */
     public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, new RememberDeviceResolver(["is_remembered"=>false])))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getFalseRememberDeviceResolver()))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -87,6 +87,24 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertSame($sameSite, $cookies[0]->getSameSite());
         $this->assertTrue($cookies[0]->isHttpOnly());
         $this->assertTrue($cookies[0]->isSecure());
+    }
+
+    public function testRememberDeviceCookieIsSetAfterAuthenticationSuccess()
+    {
+        $request = $this->getRequest();
+        $token   = $this->getToken();
+
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getTrueRememberDeviceResolver()))
+            ->onAuthenticationSuccess($request, $token);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $cookies = $response->headers->getCookies();
+        $this->assertCount(2, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+
     }
 
     private function getEncoder(): JWTEncoderInterface
@@ -110,6 +128,17 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $request->request = $this
+            ->getMockBuilder('Symfony\Component\HttpFoundation\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request->request
+            ->expects($this->any())
+            ->method('get')
+            ->with('username')
+            ->will($this->returnValue('name'));
 
         return $request;
     }
@@ -177,6 +206,30 @@ class AuthenticationSuccessHandlerTest extends TestCase
             );
 
         return $dispatcher;
+    }
+
+    private function getFalseRememberDeviceResolver()
+    {
+        $rememberDeviceResolver = $this->createMock(RememberDeviceResolver::class);
+
+        $rememberDeviceResolver
+            ->expects($this->any())
+            ->method('getRememberDeviceStatus')
+            ->willReturn(false);
+
+        return $rememberDeviceResolver;
+    }
+
+    private function getTrueRememberDeviceResolver()
+    {
+        $rememberDeviceResolver = $this->createMock(RememberDeviceResolver::class);
+
+        $rememberDeviceResolver
+            ->expects($this->any())
+            ->method('getRememberDeviceStatus')
+            ->willReturn(true);
+
+        return $rememberDeviceResolver;
     }
 
     public function provideSameSiteOptions(): array
