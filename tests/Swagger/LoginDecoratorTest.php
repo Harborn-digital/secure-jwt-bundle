@@ -15,7 +15,7 @@ class LoginDecoratorTest extends TestCase
 {
     public function testDocumentsAuthentication(): void
     {
-        $decorated = $this->createMock(NormalizerInterface::class);
+        $decorated  = $this->createMock(NormalizerInterface::class);
         $normalizer = new LoginDecorator($decorated);
 
         $decorated

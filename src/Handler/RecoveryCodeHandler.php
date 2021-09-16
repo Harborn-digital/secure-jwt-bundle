@@ -26,7 +26,7 @@ class RecoveryCodeHandler implements MessageHandlerInterface
      */
     public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine     = $doctrine;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -57,7 +57,7 @@ class RecoveryCodeHandler implements MessageHandlerInterface
     private function invalidateCurrentCodes(string $secret): void
     {
         $currentCodes = $this->doctrine->getRepository(RecoveryCodeEntity::class)->findBy(['secret' => $secret]);
-        $manager = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
+        $manager      = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
 
         array_walk($currentCodes, fn (RecoveryCodeEntity $recoveryCode) => $manager->remove($recoveryCode));
         $manager->flush();
@@ -68,7 +68,7 @@ class RecoveryCodeHandler implements MessageHandlerInterface
      */
     private function createCode(string $secret): RecoveryCodeEntity
     {
-        $manager = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
+        $manager      = $this->doctrine->getManagerForClass(RecoveryCodeEntity::class);
         $recoveryCode = new RecoveryCodeEntity();
         $recoveryCode->setSecret($secret);
         $recoveryCode->setCode($this->generateRecoveryCode());

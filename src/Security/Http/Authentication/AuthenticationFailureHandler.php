@@ -27,7 +27,7 @@ class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterf
     public function __construct(AuthenticationFailureHandlerInterface $failureHandler, EventDispatcherInterface $dispatcher)
     {
         $this->failureHandler = $failureHandler;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher     = $dispatcher;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response

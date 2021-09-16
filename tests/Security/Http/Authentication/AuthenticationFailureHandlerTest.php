@@ -42,13 +42,13 @@ class AuthenticationFailureHandlerTest extends TestCase
 
     public function testOnAuthenticationFailureNoChallenge(): void
     {
-        $request = new Request();
+        $request    = new Request();
         $dispatcher = $this->getMockBuilder(EventDispatcher::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $failureHandler = new AuthenticationFailureHandler($this->createMock(AuthenticationFailureHandlerInterface::class), $dispatcher);
-        $response = $failureHandler->onAuthenticationFailure($request, new TwoFactorAuthenticationMissingException());
+        $response       = $failureHandler->onAuthenticationFailure($request, new TwoFactorAuthenticationMissingException());
 
         $content = json_decode($response->getContent(), true);
         $cookies = $response->headers->getCookies();
@@ -62,8 +62,8 @@ class AuthenticationFailureHandlerTest extends TestCase
 
     public function testClearBearerCookieForInvalidToken(): void
     {
-        $request = new Request();
-        $response = new Response();
+        $request   = new Request();
+        $response  = new Response();
         $decorated = $this->createMock(AuthenticationFailureHandlerInterface::class);
 
         $response->headers->setCookie(new Cookie('BEARER', 'test'));
@@ -77,7 +77,7 @@ class AuthenticationFailureHandlerTest extends TestCase
         $failureHandler = new AuthenticationFailureHandler($decorated, $this->createMock(EventDispatcher::class));
 
         $response = $failureHandler->onAuthenticationFailure($request, new InvalidTokenException('Invalid token found'));
-        $cookies = $response->headers->getCookies();
+        $cookies  = $response->headers->getCookies();
 
         $this->assertCount(2, $cookies);
         $this->assertSame('BEARER', $cookies[0]->getName());

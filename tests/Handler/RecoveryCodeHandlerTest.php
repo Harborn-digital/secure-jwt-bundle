@@ -22,11 +22,11 @@ class RecoveryCodeHandlerTest extends TestCase
 {
     public function testCreateRecoveryCodes(): void
     {
-        $doctrine = $this->createMock(ManagerRegistry::class);
-        $manager = $this->createMock(EntityManager::class);
-        $repository = $this->createMock(EntityRepository::class);
+        $doctrine     = $this->createMock(ManagerRegistry::class);
+        $manager      = $this->createMock(EntityManager::class);
+        $repository   = $this->createMock(EntityRepository::class);
         $tokenStorage = new TokenStorage();
-        $user = new User();
+        $user         = new User();
 
         $user->setGoogleAuthenticatorSecret('verysecret!');
         $tokenStorage->setToken(new JWTUserToken([], $user));
@@ -62,7 +62,7 @@ class RecoveryCodeHandlerTest extends TestCase
             ->willReturn($repository);
 
         $handler = new RecoveryCodeHandler($doctrine, $tokenStorage);
-        $codes = $handler(new RecoveryCode(5));
+        $codes   = $handler(new RecoveryCode(5));
 
         $this->assertCount(5, $codes->getCodes());
         foreach ($codes as $code) {

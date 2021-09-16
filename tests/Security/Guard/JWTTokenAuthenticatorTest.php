@@ -27,7 +27,7 @@ class JWTTokenAuthenticatorTest extends TestCase
         $this->expectException(InvalidTokenException::class);
         $this->expectExceptionMessage('Invalidated JWT Token');
 
-        $request = new Request(['unit-test' => 'invalid']);
+        $request               = new Request(['unit-test' => 'invalid']);
         $jwtTokenAuthenticator = $this->getAuthenticator(new InvalidToken());
         $jwtTokenAuthenticator->getCredentials($request);
     }
@@ -37,7 +37,7 @@ class JWTTokenAuthenticatorTest extends TestCase
         $this->expectException(InvalidTokenException::class);
         $this->expectExceptionMessage('Invalid JWT Token');
 
-        $request = new Request(['unit-test' => 'invalid']);
+        $request               = new Request(['unit-test' => 'invalid']);
         $jwtTokenAuthenticator = $this->getAuthenticator(null);
         $jwtTokenAuthenticator->getCredentials($request);
     }
@@ -46,7 +46,7 @@ class JWTTokenAuthenticatorTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $request = new Request(['unit-test' => 'invalid']);
+        $request               = new Request(['unit-test' => 'invalid']);
         $jwtTokenAuthenticator = $this->getAuthenticator(null, false);
         $jwtTokenAuthenticator->getCredentials($request);
     }
@@ -56,9 +56,9 @@ class JWTTokenAuthenticatorTest extends TestCase
      */
     public function testBearerCookieIsCleared(AuthenticationException $exception, bool $clearCookie): void
     {
-        $request = new Request(['unit-test' => 'invalid']);
+        $request       = new Request(['unit-test' => 'invalid']);
         $authenticator = $this->getAuthenticator(null, false);
-        $response = $authenticator->onAuthenticationFailure($request, $exception);
+        $response      = $authenticator->onAuthenticationFailure($request, $exception);
 
         if ($clearCookie) {
             $this->assertCount(1, $response->headers->getCookies());
@@ -80,7 +80,7 @@ class JWTTokenAuthenticatorTest extends TestCase
     {
         $tokenExtractor = new QueryParameterTokenExtractor('unit-test');
 
-        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine   = $this->createMock(ManagerRegistry::class);
         $repository = $this->createMock(EntityRepository::class);
 
         if ($setupRepository) {

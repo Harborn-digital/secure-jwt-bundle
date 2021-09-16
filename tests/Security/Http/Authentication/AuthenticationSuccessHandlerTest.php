@@ -29,7 +29,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
     public function testOnAuthenticationSuccess(): void
     {
         $request = $this->getRequest();
-        $token = $this->getToken();
+        $token   = $this->getToken();
 
         $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver()))
             ->onAuthenticationSuccess($request, $token);
@@ -92,7 +92,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
     public function testRememberDeviceCookieIsSetAfterAuthenticationSuccess()
     {
         $request = $this->getRequest();
-        $token = $this->getToken();
+        $token   = $this->getToken();
 
         $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getTrueRememberDeviceResolver()))
             ->onAuthenticationSuccess($request, $token);

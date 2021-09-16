@@ -31,16 +31,16 @@ class LoginDecorator implements NormalizerInterface
             $docs['paths'] = [];
         }
         if (false === array_key_exists('/api/logouts', $docs['paths'])) {
-            $docs['paths']['/api/logouts'] = [];
+            $docs['paths']['/api/logouts']         = [];
             $docs['paths']['/api/logouts']['post'] = [];
         }
-        $docs['paths']['/api/logouts']['post']['tags'] = ['Authentication'];
-        $docs['paths']['/api/logouts']['post']['summary'] = 'Invalidate JWT token';
+        $docs['paths']['/api/logouts']['post']['tags']        = ['Authentication'];
+        $docs['paths']['/api/logouts']['post']['summary']     = 'Invalidate JWT token';
         $docs['paths']['/api/logouts']['post']['description'] = 'Log the current user out by invalidating their JWT token. The logout field in the message body may contain any value and is not used.';
-        $docs['paths']['/api/login_check'] = $this->getLoginDocumentation();
+        $docs['paths']['/api/login_check']                    = $this->getLoginDocumentation();
 
         $docs['paths']['/api/users']['post']['responses']['200']['content']['application/json']['schema']['$ref'] = '#/components/schemas/User-read';
-        $docs['paths']['/api/users']['post']['responses']['200']['content']['text/html']['schema']['$ref'] = '#/components/schemas/User-read';
+        $docs['paths']['/api/users']['post']['responses']['200']['content']['text/html']['schema']['$ref']        = '#/components/schemas/User-read';
         //unset($docs['components']['schemas']['User:83fb6eab7febe7ac9423776db8677557']);
 
         return $docs;

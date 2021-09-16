@@ -43,8 +43,8 @@ class LoginSubscriberTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->doctrine = $this->createMock(ManagerRegistry::class);
-        $this->qrCodeFactory = $this->createMock(QrCodeFactoryInterface::class);
+        $this->doctrine            = $this->createMock(ManagerRegistry::class);
+        $this->qrCodeFactory       = $this->createMock(QrCodeFactoryInterface::class);
         $this->googleAuthenticator = $this->createMock(GoogleAuthenticator::class);
 
         $this->loginSubscriber = new LoginSubscriber($this->doctrine, $this->qrCodeFactory, $this->googleAuthenticator);
@@ -52,7 +52,7 @@ class LoginSubscriberTest extends TestCase
 
     public function testConfirm2FASecret(): void
     {
-        $event = new AuthenticationSuccessEvent([], new User(), new Response());
+        $event   = new AuthenticationSuccessEvent([], new User(), new Response());
         $manager = $this->createMock(EntityManager::class);
 
         $manager

@@ -28,8 +28,8 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function __construct(ManagerRegistry $doctrine, QrCodeFactoryInterface $qrCodeFactory, GoogleAuthenticator $googleAuthenticator)
     {
-        $this->doctrine = $doctrine;
-        $this->qrCodeFactory = $qrCodeFactory;
+        $this->doctrine            = $doctrine;
+        $this->qrCodeFactory       = $qrCodeFactory;
         $this->googleAuthenticator = $googleAuthenticator;
     }
 
@@ -59,7 +59,7 @@ class LoginSubscriber implements EventSubscriberInterface
         $this->setGoogleAuthenticatorSecret($event->getUser());
 
         $qrContent = $this->googleAuthenticator->getQRContent($event->getUser());
-        $qrCode = $this->qrCodeFactory->create($qrContent, ['size' => 150]);
+        $qrCode    = $this->qrCodeFactory->create($qrContent, ['size' => 150]);
 
         $event->setResponse(
             new JsonResponse(

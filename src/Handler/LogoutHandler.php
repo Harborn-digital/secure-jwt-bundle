@@ -25,7 +25,7 @@ class LogoutHandler implements MessageHandlerInterface
     public function __construct(TokenStorageInterface $tokenStorage, ManagerRegistry $doctrine)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->doctrine = $doctrine;
+        $this->doctrine     = $doctrine;
     }
 
     /**
@@ -33,7 +33,7 @@ class LogoutHandler implements MessageHandlerInterface
      */
     public function __invoke(Logout $logout): Response
     {
-        $token = $this->tokenStorage->getToken();
+        $token    = $this->tokenStorage->getToken();
         $response = new Response();
 
         if ($token instanceof JWTUserToken) {

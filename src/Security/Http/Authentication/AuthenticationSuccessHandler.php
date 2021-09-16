@@ -34,9 +34,9 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite, RememberDeviceResolver $rememberDeviceResolver)
     {
         $this->rememberDeviceResolver = $rememberDeviceResolver;
-        $this->successHandler = $successHandler;
-        $this->jwtEncoder = $jwtEncoder;
-        $this->sameSite = $sameSite;
+        $this->successHandler         = $successHandler;
+        $this->jwtEncoder             = $jwtEncoder;
+        $this->sameSite               = $sameSite;
     }
 
     /**
@@ -44,11 +44,11 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     public function handleAuthenticationSuccess(UserInterface $user, $jwt = null): JsonResponse
     {
-        $jsonWithToken = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
-        $data = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $decoded = $this->jwtEncoder->decode($data['token']);
+        $jsonWithToken         = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
+        $data                  = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $decoded               = $this->jwtEncoder->decode($data['token']);
         $this->responsePayload = array_merge($this->responsePayload, $decoded);
-        $response = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
+        $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
         $response->headers->setCookie(new Cookie('BEARER', $data['token'], $decoded['exp'], '/', null, true, true, false, $this->sameSite));
 
         return $response;
@@ -65,7 +65,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
                 // TODO: Add to InvalidToken table
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
-                $username = $request->request->get('username');
+                $username    = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
                     'exp' => $expiry_time,

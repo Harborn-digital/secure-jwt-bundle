@@ -24,7 +24,7 @@ class SetupTwoFactorAuthenticationEvent
 
     public function __construct(TwoFactorUserInterface $user)
     {
-        $this->user = $user;
+        $this->user     = $user;
         $this->response = new JsonResponse(['result' => 'failed', 'message' => 'failed to create QR code to set up two factor authentication'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 

@@ -38,7 +38,7 @@ class JWTTokenAuthenticator extends BaseAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $token = $this->getTokenExtractor()->extract($request);
+        $token      = $this->getTokenExtractor()->extract($request);
         $repository = $this->doctrine->getRepository(InvalidToken::class);
 
         if (!$repository instanceof EntityRepository) {

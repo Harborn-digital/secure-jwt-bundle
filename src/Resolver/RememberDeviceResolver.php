@@ -16,7 +16,7 @@ class RememberDeviceResolver
     public function __construct(array $configuration, bool $debug = false)
     {
         $this->configuration = $configuration;
-        $this->debug = $debug;
+        $this->debug         = $debug;
     }
 
     public function getRememberDeviceStatus(): bool

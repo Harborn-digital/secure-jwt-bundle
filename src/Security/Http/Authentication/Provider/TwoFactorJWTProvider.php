@@ -47,12 +47,12 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
     {
         parent::__construct($userProvider, $userChecker, 'two_factor_jwt', $encoderFactory, $hideUserNotFoundExceptions);
 
-        $this->googleAuthenticator = $googleAuthenticator;
-        $this->messageBus = $messageBus;
-        $this->requestStack = $requestStack;
-        $this->jwtEncoder = $jwtEncoder;
+        $this->googleAuthenticator   = $googleAuthenticator;
+        $this->messageBus            = $messageBus;
+        $this->requestStack          = $requestStack;
+        $this->jwtEncoder            = $jwtEncoder;
         $this->JWTTokenAuthenticator = $JWTTokenAuthenticator;
-        $this->doctrine = $doctrine;
+        $this->doctrine              = $doctrine;
     }
 
     public function supports(TokenInterface $token): bool

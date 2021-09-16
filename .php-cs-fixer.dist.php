@@ -9,9 +9,10 @@ $config
         'array_syntax'           => [
             'syntax' => 'short',
         ],
-      #  'binary_operator_spaces' =>
-      #      ['operators' => ['=>', 'align_equals', 'align_double_arrow']],
-
+        'binary_operator_spaces' =>
+            ['operators' => [
+                '=' => 'align_single_space',
+            ]],
         'header_comment' => [
             'header' => <<<EOH
 This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
