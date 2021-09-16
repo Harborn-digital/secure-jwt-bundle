@@ -18,7 +18,7 @@ class TwoFactorJWTListenerTest extends TestCase
     public function testRequiresPost(): void
     {
         $twoFactorJWTListener = new TwoFactorJWTListenerFixture(true);
-        $request              = new Request();
+        $request = new Request();
 
         $this->assertFalse($twoFactorJWTListener->publicRequiresAuthentication($request));
     }
@@ -26,10 +26,10 @@ class TwoFactorJWTListenerTest extends TestCase
     public function testAttemptAuthentication(): void
     {
         $twoFactorJWTListener = new TwoFactorJWTListenerFixture(true);
-        $request              = new Request([],
+        $request = new Request([],
             [
-                'username'  => 'user',
-                'password'  => 'pass',
+                'username' => 'user',
+                'password' => 'pass',
                 'challenge' => '123',
             ]
         );
@@ -44,10 +44,10 @@ class TwoFactorJWTListenerTest extends TestCase
         $this->expectException(BadCredentialsException::class);
 
         $twoFactorJWTListener = new TwoFactorJWTListenerFixture(false);
-        $request              = new Request([],
+        $request = new Request([],
             [
-                'username'  => 'user',
-                'password'  => 'pass',
+                'username' => 'user',
+                'password' => 'pass',
                 'challenge' => '123',
             ]
         );

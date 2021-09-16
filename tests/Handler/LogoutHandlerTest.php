@@ -30,9 +30,9 @@ class LogoutHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->doctrine     = $this->createMock(ManagerRegistry::class);
+        $this->doctrine = $this->createMock(ManagerRegistry::class);
         $this->tokenStorage = new TokenStorage();
-        $this->handler      = new LogoutHandler($this->tokenStorage, $this->doctrine);
+        $this->handler = new LogoutHandler($this->tokenStorage, $this->doctrine);
     }
 
     public function testOnlyHandleJWTTokens(): void
@@ -49,7 +49,7 @@ class LogoutHandlerTest extends TestCase
     public function testRemovesCookie(): void
     {
         $this->tokenStorage->setToken(new JWTUserToken([], null, 'unit-test-token'));
-        $manager     = $this->createMock(EntityManager::class);
+        $manager = $this->createMock(EntityManager::class);
 
         $this->doctrine
             ->expects($this->once())
@@ -65,11 +65,10 @@ class LogoutHandlerTest extends TestCase
         $this->assertSame(1, $cookies[0]->getExpiresTime());
     }
 
-
     public function testPersistsInvalidToken(): void
     {
         $this->tokenStorage->setToken(new JWTUserToken([], null, 'unit-test-token'));
-        $manager     = $this->createMock(EntityManager::class);
+        $manager = $this->createMock(EntityManager::class);
         $invalidated = null;
 
         $manager

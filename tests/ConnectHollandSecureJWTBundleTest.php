@@ -16,7 +16,7 @@ class ConnectHollandSecureJWTBundleTest extends TestCase
 {
     public function testSecurityFactoryIsAdded(): void
     {
-        $bundle    = new ConnectHollandSecureJWTBundle();
+        $bundle = new ConnectHollandSecureJWTBundle();
         $container = $this->createMock(ContainerBuilder::class);
         $extension = $this->createMock(SecurityExtension::class);
 

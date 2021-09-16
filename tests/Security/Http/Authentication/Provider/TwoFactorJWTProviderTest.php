@@ -51,14 +51,14 @@ class TwoFactorJWTProviderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userProvider   = $this->createMock(UserProviderInterface::class);
+        $this->userProvider = $this->createMock(UserProviderInterface::class);
         $this->encoderFactory = $this->createMock(EncoderFactoryInterface::class);
-        $this->authenticator  = $this->createMock(GoogleAuthenticatorInterface::class);
+        $this->authenticator = $this->createMock(GoogleAuthenticatorInterface::class);
         $this->jwtEncoder = $this->createMock(JWTEncoderInterface::class);
         $this->requestStack = $this->createMock(RequestStack::class);
         $this->JWTTokenAuthenticator = $this->createMock(JWTTokenAuthenticator::class);
         $this->doctrine = $this->createMock(ManagerRegistry::class);
-        $this->messageBus     = new MessageBus();
+        $this->messageBus = new MessageBus();
 
         $this->provider = new TwoFactorJWTProvider(
             $this->userProvider, $this->createMock(UserCheckerInterface::class), $this->encoderFactory, $this->authenticator, $this->messageBus, $this->jwtEncoder, $this->requestStack, $this->JWTTokenAuthenticator, $this->doctrine, false,
@@ -77,7 +77,7 @@ class TwoFactorJWTProviderTest extends TestCase
     {
         return [
             'UsernamePasswordToken not supported' => [new UsernamePasswordToken(new User(), '', 'test'), false],
-            'TwoFactorJWTToken is supported'      => [new TwoFactorJWTToken('user', '', '123456', 'test'), true],
+            'TwoFactorJWTToken is supported' => [new TwoFactorJWTToken('user', '', '123456', 'test'), true],
         ];
     }
 

@@ -36,9 +36,9 @@ class TwoFactorJWTListenerFixture extends TwoFactorJWTListener
         };
 
         $this->options = [
-            'username_parameter'   => 'username',
-            'password_parameter'   => 'password',
-            'challenge_parameter'  => 'challenge',
+            'username_parameter' => 'username',
+            'password_parameter' => 'password',
+            'challenge_parameter' => 'challenge',
         ];
 
         $this->providerKey = 'unit-test';

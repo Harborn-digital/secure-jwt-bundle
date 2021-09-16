@@ -21,9 +21,9 @@ class RecoverSecretHandlerTest extends TestCase
 {
     public function testNoExceptionForIncorrectCode(): void
     {
-        $doctrine   = $this->createMock(ManagerRegistry::class);
+        $doctrine = $this->createMock(ManagerRegistry::class);
         $repository = $this->createMock(EntityRepository::class);
-        $user       = new User();
+        $user = new User();
 
         $user->setGoogleAuthenticatorSecret('verysecret!');
 
@@ -43,10 +43,10 @@ class RecoverSecretHandlerTest extends TestCase
     {
         $this->expectException(TwoFactorSecretNotSetupException::class);
 
-        $doctrine   = $this->createMock(ManagerRegistry::class);
+        $doctrine = $this->createMock(ManagerRegistry::class);
         $repository = $this->createMock(EntityRepository::class);
-        $manager    = $this->createMock(EntityManager::class);
-        $user       = new User();
+        $manager = $this->createMock(EntityManager::class);
+        $user = new User();
 
         $user->setGoogleAuthenticatorSecret('verysecret!');
         $user->setGoogleAuthenticatorConfirmed(true);
