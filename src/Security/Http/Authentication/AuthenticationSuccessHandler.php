@@ -35,10 +35,8 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $this->rememberDeviceResolver = $rememberDeviceResolver;
         $this->successHandler = $successHandler;
-        $this->jwtEncoder     = $jwtEncoder;
-        $this->sameSite       = $sameSite;
-
-
+        $this->jwtEncoder = $jwtEncoder;
+        $this->sameSite = $sameSite;
     }
 
     /**
@@ -46,16 +44,14 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     public function handleAuthenticationSuccess(UserInterface $user, $jwt = null): JsonResponse
     {
-
-        $jsonWithToken         = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
-        $data                  = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $decoded               = $this->jwtEncoder->decode($data['token']);
+        $jsonWithToken = $this->successHandler->handleAuthenticationSuccess($user, $jwt);
+        $data = json_decode($jsonWithToken->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $decoded = $this->jwtEncoder->decode($data['token']);
         $this->responsePayload = array_merge($this->responsePayload, $decoded);
-        $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
+        $response = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
         $response->headers->setCookie(new Cookie('BEARER', $data['token'], $decoded['exp'], '/', null, true, true, false, $this->sameSite));
 
-
-        return  $response;
+        return $response;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
@@ -63,9 +59,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $response = $this->handleAuthenticationSuccess($token->getUser());
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-
             if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] > time()) {
-
                 // Remove cookie if expired
                 $response->headers->removeCookie('REMEMBER_DEVICE');
                 // TODO: Add to InvalidToken table
@@ -74,19 +68,16 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
                 $username = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
-                    "exp" => $expiry_time,
-                    "user" => $username,
+                    'exp' => $expiry_time,
+                    'user' => $username,
                 ]);
-
 
                 // TODO: Add cookie to RememberDeviceToken table
                 $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, false, $this->sameSite));
             }
-
         }
 
         return $response;
-
     }
 
     /**
@@ -96,6 +87,4 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $this->responsePayload[$key] = $value;
     }
-
-
 }

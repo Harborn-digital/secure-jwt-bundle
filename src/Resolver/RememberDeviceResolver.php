@@ -1,9 +1,11 @@
 <?php
 
-namespace ConnectHolland\SecureJWTBundle\Resolver;
+/*
+ * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
+ * Copyright (c) 2020 Connect Holland.
+ */
 
-use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\Integer;
+namespace ConnectHolland\SecureJWTBundle\Resolver;
 
 class RememberDeviceResolver
 {
@@ -19,23 +21,19 @@ class RememberDeviceResolver
 
     public function getRememberDeviceStatus(): bool
     {
-        return $this->configuration["is_remembered"];
+        return $this->configuration['is_remembered'];
     }
-
 
     public function getRememberDeviceExpiryDays(): int
     {
-        return $this->configuration["expiry_days"];
+        return $this->configuration['expiry_days'];
     }
 
     /**
-     * Change the configuration by passing a key-value array
+     * Change the configuration by passing a key-value array.
      */
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
-
-
-
 }

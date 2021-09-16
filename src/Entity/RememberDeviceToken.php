@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
+ * Copyright (c) 2020 Connect Holland.
+ */
+
 namespace ConnectHolland\SecureJWTBundle\Entity;
 
 /**
@@ -8,10 +13,8 @@ namespace ConnectHolland\SecureJWTBundle\Entity;
  *
  * @codeCoverageIgnore Trivial entity with only getters and setters.
  */
-
 class RememberDeviceToken
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -53,5 +56,4 @@ class RememberDeviceToken
     {
         $this->username = $username;
     }
-
 }

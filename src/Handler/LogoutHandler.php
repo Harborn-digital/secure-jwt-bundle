@@ -25,7 +25,7 @@ class LogoutHandler implements MessageHandlerInterface
     public function __construct(TokenStorageInterface $tokenStorage, ManagerRegistry $doctrine)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->doctrine     = $doctrine;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -50,7 +50,6 @@ class LogoutHandler implements MessageHandlerInterface
             }
 
             $response->headers->clearCookie('BEARER', '/', null, true, true, 'none');
-
         }
 
         return $response;

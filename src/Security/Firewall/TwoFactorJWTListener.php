@@ -27,10 +27,10 @@ class TwoFactorJWTListener extends AbstractAuthenticationListener
      * Default options.
      */
     private const DEFAULTS = [
-        'username_parameter'   => 'username',
-        'password_parameter'   => 'password',
-        'challenge_parameter'  => 'challenge',
-        'post_only'            => true,
+        'username_parameter' => 'username',
+        'password_parameter' => 'password',
+        'challenge_parameter' => 'challenge',
+        'post_only' => true,
     ];
 
     /**
@@ -76,8 +76,8 @@ class TwoFactorJWTListener extends AbstractAuthenticationListener
 
     protected function attemptAuthentication(Request $request): TokenInterface
     {
-        $username  = trim(ParameterBagUtils::getParameterBagValue($request->request, $this->options['username_parameter']));
-        $password  = ParameterBagUtils::getParameterBagValue($request->request, $this->options['password_parameter']) ?: '';
+        $username = trim(ParameterBagUtils::getParameterBagValue($request->request, $this->options['username_parameter']));
+        $password = ParameterBagUtils::getParameterBagValue($request->request, $this->options['password_parameter']) ?: '';
         $challenge = trim(ParameterBagUtils::getParameterBagValue($request->request, $this->options['challenge_parameter']) ?: '');
 
         return $this->authenticationManager->authenticate(new TwoFactorJWTToken($username, $password, $challenge, $this->providerKey));

@@ -16,9 +16,7 @@ use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-use http\Env\Request;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -50,12 +48,11 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         parent::__construct($userProvider, $userChecker, 'two_factor_jwt', $encoderFactory, $hideUserNotFoundExceptions);
 
         $this->googleAuthenticator = $googleAuthenticator;
-        $this->messageBus          = $messageBus;
+        $this->messageBus = $messageBus;
         $this->requestStack = $requestStack;
         $this->jwtEncoder = $jwtEncoder;
         $this->JWTTokenAuthenticator = $JWTTokenAuthenticator;
         $this->doctrine = $doctrine;
-
     }
 
     public function supports(TokenInterface $token): bool
@@ -78,10 +75,10 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
 
         $request = $this->requestStack->getCurrentRequest();
 
-        if(is_object($request)) {
-            $rememberDeviceCookie = ($request->cookies->get("REMEMBER_DEVICE"));
+        if (is_object($request)) {
+            $rememberDeviceCookie = ($request->cookies->get('REMEMBER_DEVICE'));
 
-            if($this->checkRememberDeviceToken($rememberDeviceCookie, $user)){
+            if ($this->checkRememberDeviceToken($rememberDeviceCookie, $user)) {
                 return;
             }
         }
@@ -100,8 +97,7 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
 
     private function checkRememberDeviceToken($token, $user)
     {
-        if(!is_null($token) && $this->jwtEncoder->decode($token)['exp'] > time() && $this->jwtEncoder->decode($token)['user'] === $user->getUsername()){
-
+        if (!is_null($token) && $this->jwtEncoder->decode($token)['exp'] > time() && $this->jwtEncoder->decode($token)['user'] === $user->getUsername()) {
             $repository = $this->doctrine->getRepository(InvalidToken::class);
 
             if (!$repository instanceof EntityRepository) {
@@ -114,6 +110,7 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
 
             return true;
         }
+
         return false;
     }
 }

@@ -11,15 +11,12 @@ use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ConnectHollandSecureJWTExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -31,7 +28,5 @@ class ConnectHollandSecureJWTExtension extends Extension
 
         $rememberDeviceResolver = $container->getDefinition(RememberDeviceResolver::class);
         $rememberDeviceResolver->replaceArgument('$configuration', $config);
-
     }
 }
-
