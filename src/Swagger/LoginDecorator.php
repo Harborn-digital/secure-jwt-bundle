@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Swagger;
@@ -58,17 +58,17 @@ class LoginDecorator implements NormalizerInterface
     {
         return [
             'post' => [
-                'tags' => ['Authentication'],
+                'tags'        => ['Authentication'],
                 'description' => 'Two factor login, after a valid login the JWT token will be set as a secure cookie',
-                'summary' => 'Two Factor Login',
+                'summary'     => 'Two Factor Login',
                 'operationId' => 'login',
-                'responses' => [
+                'responses'   => [
                     '200' => [
                         'description' => 'Login complete',
-                        'content' => [
+                        'content'     => [
                             'application/json' => [
                                 'schema' => [
-                                    'type' => 'object',
+                                    'type'       => 'object',
                                     'properties' => [
                                         'result' => [
                                             'type' => 'string',
@@ -89,10 +89,10 @@ class LoginDecorator implements NormalizerInterface
                     ],
                     '401' => [
                         'description' => 'Login failed or incomplete',
-                        'content' => [
+                        'content'     => [
                             'application/json' => [
                                 'schema' => [
-                                    'type' => 'object',
+                                    'type'       => 'object',
                                     'properties' => [
                                         'code' => [
                                             'type' => 'integer',
@@ -117,7 +117,7 @@ class LoginDecorator implements NormalizerInterface
                     'content' => [
                         'application/json' => [
                             'schema' => [
-                                'type' => 'object',
+                                'type'     => 'object',
                                 'required' => [
                                     'username',
                                     'password',
@@ -134,8 +134,8 @@ class LoginDecorator implements NormalizerInterface
                                     ],
                                 ],
                                 'example' => [
-                                    'username' => 'example@example.org',
-                                    'password' => 'secret',
+                                    'username'  => 'example@example.org',
+                                    'password'  => 'secret',
                                     'challenge' => '123456',
                                 ],
                             ],

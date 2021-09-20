@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Fixture;
@@ -36,8 +36,8 @@ class TwoFactorJWTListenerFixture extends TwoFactorJWTListener
         };
 
         $this->options = [
-            'username_parameter' => 'username',
-            'password_parameter' => 'password',
+            'username_parameter'  => 'username',
+            'password_parameter'  => 'password',
             'challenge_parameter' => 'challenge',
         ];
 

@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
@@ -75,7 +75,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
                 $username    = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
-                    'exp' => $expiry_time,
+                    'exp'  => $expiry_time,
                     'user' => $username,
                 ]);
 

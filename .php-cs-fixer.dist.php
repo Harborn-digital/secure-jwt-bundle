@@ -11,12 +11,13 @@ $config
         ],
         'binary_operator_spaces' =>
             ['operators' => [
-                '=' => 'align_single_space',
+                '=>' => 'align_single_space_minimal',
+                '=' => 'align_single_space_minimal'
             ]],
         'header_comment' => [
             'header' => <<<EOH
 This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
-Copyright (c) 2020 Connect Holland.
+Copyright (c) 2020-2021 Connect Holland.
 EOH
                 ,
             ]

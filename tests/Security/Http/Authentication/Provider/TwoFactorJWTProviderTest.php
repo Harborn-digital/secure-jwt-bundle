@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication\Provider;
@@ -77,7 +77,7 @@ class TwoFactorJWTProviderTest extends TestCase
     {
         return [
             'UsernamePasswordToken not supported' => [new UsernamePasswordToken(new User(), '', 'test'), false],
-            'TwoFactorJWTToken is supported' => [new TwoFactorJWTToken('user', '', '123456', 'test'), true],
+            'TwoFactorJWTToken is supported'      => [new TwoFactorJWTToken('user', '', '123456', 'test'), true],
         ];
     }
 

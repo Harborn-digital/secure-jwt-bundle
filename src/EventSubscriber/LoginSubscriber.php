@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\EventSubscriber;
@@ -40,7 +40,7 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         return [
             SetupTwoFactorAuthenticationEvent::NAME => 'provideQRCode',
-            Events::AUTHENTICATION_SUCCESS => 'confirm2Fa',
+            Events::AUTHENTICATION_SUCCESS          => 'confirm2Fa',
         ];
     }
 
@@ -64,9 +64,9 @@ class LoginSubscriber implements EventSubscriberInterface
         $event->setResponse(
             new JsonResponse(
                 [
-                    'result' => 'ok',
+                    'result'  => 'ok',
                     'message' => 'use provided QR code to set up two factor authentication',
-                    'qr' => $qrCode->writeDataUri(),
+                    'qr'      => $qrCode->writeDataUri(),
                 ],
                 Response::HTTP_OK
             )

@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Firewall;
@@ -28,8 +28,8 @@ class TwoFactorJWTListenerTest extends TestCase
         $twoFactorJWTListener = new TwoFactorJWTListenerFixture(true);
         $request              = new Request([],
             [
-                'username' => 'user',
-                'password' => 'pass',
+                'username'  => 'user',
+                'password'  => 'pass',
                 'challenge' => '123',
             ]
         );
@@ -46,8 +46,8 @@ class TwoFactorJWTListenerTest extends TestCase
         $twoFactorJWTListener = new TwoFactorJWTListenerFixture(false);
         $request              = new Request([],
             [
-                'username' => 'user',
-                'password' => 'pass',
+                'username'  => 'user',
+                'password'  => 'pass',
                 'challenge' => '123',
             ]
         );

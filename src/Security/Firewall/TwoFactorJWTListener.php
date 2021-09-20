@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Security\Firewall;
@@ -27,10 +27,10 @@ class TwoFactorJWTListener extends AbstractAuthenticationListener
      * Default options.
      */
     private const DEFAULTS = [
-        'username_parameter' => 'username',
-        'password_parameter' => 'password',
+        'username_parameter'  => 'username',
+        'password_parameter'  => 'password',
         'challenge_parameter' => 'challenge',
-        'post_only' => true,
+        'post_only'           => true,
     ];
 
     /**
