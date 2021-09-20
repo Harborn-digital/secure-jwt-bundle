@@ -105,10 +105,11 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $invalidToken->setToken($token);
         $invalidToken->setInvalidatedAt(new \DateTime('now'));
 
-        if (!isEmpty($invalidToken)) {
+        if(!is_null($entityManager)) {
             $entityManager->persist($invalidToken);
             $entityManager->flush();
         }
+
     }
 
     private function addToValidTokens($token, $user): void
@@ -119,7 +120,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $rememberDeviceToken->setToken($token);
         $rememberDeviceToken->setUsername($user);
 
-        if (!isEmpty($rememberDeviceToken)) {
+        if(!is_null($entityManager)) {
             $entityManager->persist($rememberDeviceToken);
             $entityManager->flush();
         }
