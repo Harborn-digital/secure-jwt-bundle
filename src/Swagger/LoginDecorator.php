@@ -41,7 +41,7 @@ class LoginDecorator implements NormalizerInterface
 
         $docs['paths']['/api/users']['post']['responses']['200']['content']['application/json']['schema']['$ref'] = '#/components/schemas/User-read';
         $docs['paths']['/api/users']['post']['responses']['200']['content']['text/html']['schema']['$ref']        = '#/components/schemas/User-read';
-        //unset($docs['components']['schemas']['User:83fb6eab7febe7ac9423776db8677557']);
+        unset($docs['components']['schemas']['User:83fb6eab7febe7ac9423776db8677557']);
 
         return $docs;
     }

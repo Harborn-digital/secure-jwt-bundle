@@ -9,7 +9,7 @@ namespace ConnectHolland\SecureJWTBundle\Entity;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="remember_device_invalid_token")
+ * @ORM\Table(name="secure_jwt_remember_device_token")
  *
  * @codeCoverageIgnore Trivial entity with only getters and setters.
  */
