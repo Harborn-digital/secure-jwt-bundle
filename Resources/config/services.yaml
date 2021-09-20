@@ -27,6 +27,4 @@ services:
         public: true
         arguments:
             $configuration: []
-            $debug: '%kernel.debug%'
-
 
