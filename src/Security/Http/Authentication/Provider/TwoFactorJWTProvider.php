@@ -95,7 +95,7 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
         }
     }
 
-    private function checkRememberDeviceToken($token, $user)
+    private function checkRememberDeviceToken($token, $user): bool
     {
         if (!is_null($token) && $this->jwtEncoder->decode($token)['exp'] > time() && $this->jwtEncoder->decode($token)['user'] === $user->getUsername()) {
             $repository = $this->doctrine->getRepository(InvalidToken::class);

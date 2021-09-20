@@ -7,8 +7,12 @@
 
 namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
+use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
+use ConnectHolland\SecureJWTBundle\Entity\RememberDeviceToken;
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use function PHPUnit\Framework\isEmpty;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,12 +35,15 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
     private string $sameSite;
 
-    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite, RememberDeviceResolver $rememberDeviceResolver)
+    private ManagerRegistry $doctrine;
+
+    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite, RememberDeviceResolver $rememberDeviceResolver, ManagerRegistry $doctrine)
     {
         $this->rememberDeviceResolver = $rememberDeviceResolver;
         $this->successHandler         = $successHandler;
         $this->jwtEncoder             = $jwtEncoder;
         $this->sameSite               = $sameSite;
+        $this->doctrine               = $doctrine;
     }
 
     /**
@@ -60,7 +67,10 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
             if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] > time()) {
-                // TODO: Add to InvalidToken table
+                // Only add the token to the invalid tokens table if the expiry time is invalid, not if the cookie is null
+                if (!is_null($request->cookies) && !is_null($request->cookies->get('REMEMBER_DEVICE'))) {
+                    $this->addToInvalidTokens($request->cookies->get('REMEMBER_DEVICE'));
+                }
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
                 $username    = $request->request->get('username');
@@ -70,7 +80,8 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
                     'user' => $username,
                 ]);
 
-                // TODO: Add cookie to RememberDeviceToken table
+                $this->addToValidTokens($data, $username);
+
                 $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, false, $this->sameSite));
             }
         }
@@ -84,5 +95,33 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
+    }
+
+    private function addToInvalidTokens($token): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        $invalidToken = new InvalidToken();
+        $invalidToken->setToken($token);
+        $invalidToken->setInvalidatedAt(new \DateTime('now'));
+
+        if (!isEmpty($invalidToken)) {
+            $entityManager->persist($invalidToken);
+            $entityManager->flush();
+        }
+    }
+
+    private function addToValidTokens($token, $user): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        $rememberDeviceToken = new RememberDeviceToken();
+        $rememberDeviceToken->setToken($token);
+        $rememberDeviceToken->setUsername($user);
+
+        if (!isEmpty($rememberDeviceToken)) {
+            $entityManager->persist($rememberDeviceToken);
+            $entityManager->flush();
+        }
     }
 }

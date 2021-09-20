@@ -9,6 +9,7 @@ namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
@@ -31,7 +32,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -51,7 +52,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -71,7 +72,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
      */
     public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getFalseRememberDeviceResolver()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -94,7 +95,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getTrueRememberDeviceResolver()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getTrueRememberDeviceResolver(), $this->getDoctrine()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -114,6 +115,11 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->expects($this->once())
             ->method('decode')
             ->willReturn(['user' => 'example@example.org', 'exp' => 1627902433]);
+
+        $encoder
+            ->expects($this->any())
+            ->method('encode')
+            ->willReturn('encoded_value');
 
         return $encoder;
     }
@@ -229,6 +235,11 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->willReturn(true);
 
         return $rememberDeviceResolver;
+    }
+
+    private function getDoctrine()
+    {
+        return $this->createMock(ManagerRegistry::class);
     }
 
     public function provideSameSiteOptions(): array
