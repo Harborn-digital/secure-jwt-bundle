@@ -12,7 +12,6 @@ use ConnectHolland\SecureJWTBundle\Entity\RememberDeviceToken;
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
-use function PHPUnit\Framework\isEmpty;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +65,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $response = $this->handleAuthenticationSuccess($token->getUser());
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] > time()) {
+            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()) {
                 // Only add the token to the invalid tokens table if the expiry time is invalid, not if the cookie is null
                 if (!is_null($request->cookies) && !is_null($request->cookies->get('REMEMBER_DEVICE'))) {
                     $this->addToInvalidTokens($request->cookies->get('REMEMBER_DEVICE'));
@@ -105,11 +104,10 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $invalidToken->setToken($token);
         $invalidToken->setInvalidatedAt(new \DateTime('now'));
 
-        if(!is_null($entityManager)) {
+        if (!is_null($entityManager)) {
             $entityManager->persist($invalidToken);
             $entityManager->flush();
         }
-
     }
 
     private function addToValidTokens($token, $user): void
@@ -120,7 +118,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $rememberDeviceToken->setToken($token);
         $rememberDeviceToken->setUsername($user);
 
-        if(!is_null($entityManager)) {
+        if (!is_null($entityManager)) {
             $entityManager->persist($rememberDeviceToken);
             $entityManager->flush();
         }
