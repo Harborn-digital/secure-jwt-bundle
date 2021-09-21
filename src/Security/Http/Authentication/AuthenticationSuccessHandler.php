@@ -66,10 +66,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
             if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()) {
-                // Only add the token to the invalid tokens table if the expiry time is invalid, not if the cookie is null
-                if (!is_null($request->cookies) && !is_null($request->cookies->get('REMEMBER_DEVICE'))) {
-                    $this->addToInvalidTokens($request->cookies->get('REMEMBER_DEVICE'));
-                }
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
                 $username    = $request->request->get('username');
@@ -81,7 +77,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
                 $this->addToValidTokens($data, $username);
 
-                $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, false, $this->sameSite));
+                $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, true, false, $this->sameSite));
             }
         }
 
@@ -94,20 +90,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
-    }
-
-    private function addToInvalidTokens($token): void
-    {
-        $entityManager = $this->doctrine->getManager();
-
-        $invalidToken = new InvalidToken();
-        $invalidToken->setToken($token);
-        $invalidToken->setInvalidatedAt(new \DateTime('now'));
-
-        if (!is_null($entityManager)) {
-            $entityManager->persist($invalidToken);
-            $entityManager->flush();
-        }
     }
 
     private function addToValidTokens($token, $user): void

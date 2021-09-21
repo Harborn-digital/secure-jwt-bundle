@@ -20,7 +20,6 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode
-            ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('is_remembered')
                     ->defaultFalse()
