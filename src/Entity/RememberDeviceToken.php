@@ -30,7 +30,7 @@ class RememberDeviceToken
     private string $token;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=180)
      */
     private string $username;
 

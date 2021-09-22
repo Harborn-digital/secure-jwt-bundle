@@ -217,5 +217,28 @@ If correct you'll receive:
 
 The response headers will include a secure cookie containing the JWT token to allow future authenticated calls.
 
+## 2FA Remember this device
+
+The remember device functionality allows users to skip the 2fa for a configurable amount of days. The default configuration is set to false, which means it doesn't set a REMEMBER_DEVICE cookie after logging in.
+The default amount of days is set to 30.
+
+To configure:
+
+
+In the config/packages folder of the root project create a new file called:
+`connect_holland_secure_jwt.yaml`
+
+In this file the configuration can be set:
+
+```yaml
+connect_holland_secure_jwt:
+  is_remembered: true
+  expiry_days: 14
+```
+
+As mentioned before, after logging in a REMEMBER_DEVICE cookie will be set. It will contain a unix expiry time and the email of the user.
+
+Besides placing the cookie it will be persisted in the: `secure_jwt_remember_device_token` table. This entity can be found in `src/Entity/RememberDeviceToken.php`
+
 ## Recover codes
 You can retrieve recovery codes for 2FA which allow you to reset 2FA. If a valid recovery code is entered as `challenge`, 2FA will be reset and you'll get a QR code response. 

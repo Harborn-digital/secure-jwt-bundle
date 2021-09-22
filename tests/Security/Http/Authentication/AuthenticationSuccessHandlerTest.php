@@ -32,7 +32,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -52,7 +52,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -72,7 +72,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
      */
     public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getFalseRememberDeviceResolver(), $this->getDoctrine()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -95,7 +95,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getTrueRememberDeviceResolver(), $this->getDoctrine()))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(true), $this->getDoctrine()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -213,29 +213,18 @@ class AuthenticationSuccessHandlerTest extends TestCase
         return $dispatcher;
     }
 
-    private function getFalseRememberDeviceResolver()
+    private function getRememberDeviceResolver($status)
     {
         $rememberDeviceResolver = $this->createMock(RememberDeviceResolver::class);
 
         $rememberDeviceResolver
             ->expects($this->any())
             ->method('getRememberDeviceStatus')
-            ->willReturn(false);
+            ->willReturn($status);
 
         return $rememberDeviceResolver;
     }
 
-    private function getTrueRememberDeviceResolver()
-    {
-        $rememberDeviceResolver = $this->createMock(RememberDeviceResolver::class);
-
-        $rememberDeviceResolver
-            ->expects($this->any())
-            ->method('getRememberDeviceStatus')
-            ->willReturn(true);
-
-        return $rememberDeviceResolver;
-    }
 
     private function getDoctrine()
     {
