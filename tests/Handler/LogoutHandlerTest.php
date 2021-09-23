@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Handler;
@@ -49,7 +49,7 @@ class LogoutHandlerTest extends TestCase
     public function testRemovesCookie(): void
     {
         $this->tokenStorage->setToken(new JWTUserToken([], null, 'unit-test-token'));
-        $manager     = $this->createMock(EntityManager::class);
+        $manager = $this->createMock(EntityManager::class);
 
         $this->doctrine
             ->expects($this->once())
@@ -64,7 +64,6 @@ class LogoutHandlerTest extends TestCase
         $this->assertSame('BEARER', $cookies[0]->getName());
         $this->assertSame(1, $cookies[0]->getExpiresTime());
     }
-
 
     public function testPersistsInvalidToken(): void
     {

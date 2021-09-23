@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="secure_jwt_invalid_token")
+ * @ORM\Table(name="secure_jwt_remember_device_token")
  *
  * @codeCoverageIgnore Trivial entity with only getters and setters.
  */
-class InvalidToken
+class RememberDeviceToken
 {
     /**
      * @ORM\Id()
@@ -30,9 +30,9 @@ class InvalidToken
     private string $token;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=180)
      */
-    private \DateTime $invalidatedAt;
+    private string $username;
 
     public function getId(): int
     {
@@ -49,13 +49,13 @@ class InvalidToken
         $this->token = $token;
     }
 
-    public function getInvalidatedAt(): \DateTime
+    public function getUsername(): string
     {
-        return $this->invalidatedAt;
+        return $this->username;
     }
 
-    public function setInvalidatedAt(\DateTime $invalidatedAt): void
+    public function setUsername(string $username): void
     {
-        $this->invalidatedAt = $invalidatedAt;
+        $this->username = $username;
     }
 }

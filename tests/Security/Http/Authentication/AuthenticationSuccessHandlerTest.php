@@ -2,12 +2,14 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 
+use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
@@ -30,7 +32,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $request = $this->getRequest();
         $token   = $this->getToken();
 
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -50,7 +52,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     public function testHandleAuthenticationSuccess()
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict'))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser());
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -70,7 +72,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
      */
     public function testHandleAuthenticationSuccessWithGivenJWT(string $sameSite)
     {
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite))
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), $sameSite, $this->getRememberDeviceResolver(false), $this->getDoctrine()))
             ->handleAuthenticationSuccess($this->getUser(), 'jwt');
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -88,6 +90,23 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertTrue($cookies[0]->isSecure());
     }
 
+    public function testRememberDeviceCookieIsSetAfterAuthenticationSuccess()
+    {
+        $request = $this->getRequest();
+        $token   = $this->getToken();
+
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(true), $this->getDoctrine()))
+            ->onAuthenticationSuccess($request, $token);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $cookies = $response->headers->getCookies();
+        $this->assertCount(2, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+    }
+
     private function getEncoder(): JWTEncoderInterface
     {
         $encoder = $this->createMock(JWTEncoderInterface::class);
@@ -96,6 +115,11 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->expects($this->once())
             ->method('decode')
             ->willReturn(['user' => 'example@example.org', 'exp' => 1627902433]);
+
+        $encoder
+            ->expects($this->any())
+            ->method('encode')
+            ->willReturn('encoded_value');
 
         return $encoder;
     }
@@ -109,6 +133,17 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $request->request = $this
+            ->getMockBuilder('Symfony\Component\HttpFoundation\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request->request
+            ->expects($this->any())
+            ->method('get')
+            ->with('username')
+            ->will($this->returnValue('name'));
 
         return $request;
     }
@@ -176,6 +211,24 @@ class AuthenticationSuccessHandlerTest extends TestCase
             );
 
         return $dispatcher;
+    }
+
+    private function getRememberDeviceResolver($status)
+    {
+        $rememberDeviceResolver = $this->createMock(RememberDeviceResolver::class);
+
+        $rememberDeviceResolver
+            ->expects($this->any())
+            ->method('getRememberDeviceStatus')
+            ->willReturn($status);
+
+        return $rememberDeviceResolver;
+    }
+
+
+    private function getDoctrine()
+    {
+        return $this->createMock(ManagerRegistry::class);
     }
 
     public function provideSameSiteOptions(): array

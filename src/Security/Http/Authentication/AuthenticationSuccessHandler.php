@@ -2,11 +2,15 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 
+use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
+use ConnectHolland\SecureJWTBundle\Entity\RememberDeviceToken;
+use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,15 +28,21 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
     private JWTEncoderInterface $jwtEncoder;
 
+    private RememberDeviceResolver $rememberDeviceResolver;
+
     private array $responsePayload = [];
 
     private string $sameSite;
 
-    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite)
+    private ManagerRegistry $doctrine;
+
+    public function __construct(AuthenticationSuccessHandlerInterface $successHandler, JWTEncoderInterface $jwtEncoder, string $sameSite, RememberDeviceResolver $rememberDeviceResolver, ManagerRegistry $doctrine)
     {
-        $this->successHandler = $successHandler;
-        $this->jwtEncoder     = $jwtEncoder;
-        $this->sameSite       = $sameSite;
+        $this->rememberDeviceResolver = $rememberDeviceResolver;
+        $this->successHandler         = $successHandler;
+        $this->jwtEncoder             = $jwtEncoder;
+        $this->sameSite               = $sameSite;
+        $this->doctrine               = $doctrine;
     }
 
     /**
@@ -47,12 +57,31 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         $response              = new JsonResponse(['result' => 'ok', 'payload' => $this->responsePayload]);
         $response->headers->setCookie(new Cookie('BEARER', $data['token'], $decoded['exp'], '/', null, true, true, false, $this->sameSite));
 
-        return  $response;
+        return $response;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
-        return $this->handleAuthenticationSuccess($token->getUser());
+        $response = $this->handleAuthenticationSuccess($token->getUser());
+
+        if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
+            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()) {
+
+                $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
+                $username    = $request->request->get('username');
+
+                $data = $this->jwtEncoder->encode([
+                    'exp'  => $expiry_time,
+                    'user' => $username,
+                ]);
+
+                $this->addToValidTokens($data, $username);
+
+                $response->headers->setCookie(new Cookie('REMEMBER_DEVICE', $data, $expiry_time, '/', null, true, true, false, $this->sameSite));
+            }
+        }
+
+        return $response;
     }
 
     /**
@@ -61,5 +90,19 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
+    }
+
+    private function addToValidTokens($token, $user): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        $rememberDeviceToken = new RememberDeviceToken();
+        $rememberDeviceToken->setToken($token);
+        $rememberDeviceToken->setUsername($user);
+
+        if (!is_null($entityManager)) {
+            $entityManager->persist($rememberDeviceToken);
+            $entityManager->flush();
+        }
     }
 }

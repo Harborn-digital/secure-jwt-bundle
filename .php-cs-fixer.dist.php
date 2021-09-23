@@ -1,22 +1,23 @@
 <?php
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setRules([
         '@Symfony'               => true,
         'ordered_imports'        => true,
-        'psr0'                   => false,
         'yoda_style'             => true,
         'phpdoc_order'           => true,
         'array_syntax'           => [
             'syntax' => 'short',
         ],
-        'binary_operator_spaces' => [
-            'align_equals'       => true,
-            'align_double_arrow' => true,
-        ],
-        'header_comment'         => [
+        'binary_operator_spaces' =>
+            ['operators' => [
+                '=>' => 'align_single_space_minimal',
+                '=' => 'align_single_space_minimal'
+            ]],
+        'header_comment' => [
             'header' => <<<EOH
 This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
-Copyright (c) 2020 Connect Holland.
+Copyright (c) 2020-2021 Connect Holland.
 EOH
                 ,
             ]
@@ -27,3 +28,5 @@ EOH
             __DIR__.'/tests'
         ]
     ));
+
+return $config;

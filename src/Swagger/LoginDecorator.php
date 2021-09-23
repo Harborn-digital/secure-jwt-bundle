@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Swagger;
@@ -105,8 +105,8 @@ class LoginDecorator implements NormalizerInterface
                                         ],
                                     ],
                                     'example' => [
-                                        'result'  => 'ok',
-                                        'status'  => 'two factor authentication required',
+                                        'result' => 'ok',
+                                        'status' => 'two factor authentication required',
                                     ],
                                 ],
                             ],

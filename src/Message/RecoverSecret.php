@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Message;
@@ -20,8 +20,8 @@ final class RecoverSecret
      */
     public function __construct(TwoFactorUserInterface $user, string $code)
     {
-        $this->user   = $user;
-        $this->code   = $code;
+        $this->user = $user;
+        $this->code = $code;
     }
 
     public function getUser(): TwoFactorUserInterface

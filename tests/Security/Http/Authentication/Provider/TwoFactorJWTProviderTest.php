@@ -2,18 +2,22 @@
 
 /*
  * This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
- * Copyright (c) 2020 Connect Holland.
+ * Copyright (c) 2020-2021 Connect Holland.
  */
 
 namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication\Provider;
 
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
 use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
 use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -37,15 +41,27 @@ class TwoFactorJWTProviderTest extends TestCase
 
     private MessageBusInterface $messageBus;
 
+    private JWTEncoderInterface $jwtEncoder;
+
+    private RequestStack $requestStack;
+
+    private JWTTokenAuthenticator $JWTTokenAuthenticator;
+
+    private ManagerRegistry $doctrine;
+
     public function setUp(): void
     {
-        $this->userProvider   = $this->createMock(UserProviderInterface::class);
-        $this->encoderFactory = $this->createMock(EncoderFactoryInterface::class);
-        $this->authenticator  = $this->createMock(GoogleAuthenticatorInterface::class);
-        $this->messageBus     = new MessageBus();
+        $this->userProvider          = $this->createMock(UserProviderInterface::class);
+        $this->encoderFactory        = $this->createMock(EncoderFactoryInterface::class);
+        $this->authenticator         = $this->createMock(GoogleAuthenticatorInterface::class);
+        $this->jwtEncoder            = $this->createMock(JWTEncoderInterface::class);
+        $this->requestStack          = $this->createMock(RequestStack::class);
+        $this->JWTTokenAuthenticator = $this->createMock(JWTTokenAuthenticator::class);
+        $this->doctrine              = $this->createMock(ManagerRegistry::class);
+        $this->messageBus            = new MessageBus();
 
         $this->provider = new TwoFactorJWTProvider(
-            $this->userProvider, $this->createMock(UserCheckerInterface::class), $this->encoderFactory, $this->authenticator, $this->messageBus, false,
+            $this->userProvider, $this->createMock(UserCheckerInterface::class), $this->encoderFactory, $this->authenticator, $this->messageBus, $this->jwtEncoder, $this->requestStack, $this->JWTTokenAuthenticator, $this->doctrine, false,
         );
     }
 
