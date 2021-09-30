@@ -63,11 +63,10 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
         $response = $this->handleAuthenticationSuccess($token->getUser());
-        $username    = $request->request->get('username');
-        $remember_device_cookie = $request->cookies->get('REMEMBER_DEVICE');
+        $username = $request->request->get('username');
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-            if (is_null($request->cookies) || is_null($remember_device_cookie) || $this->jwtEncoder->decode($remember_device_cookie)['exp'] < time() || $username != $this->jwtEncoder->decode($remember_device_cookie)['user']) {
+            if ($this->checkForInvalidRememberDeviceCookie($request, $username)) {
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
 
@@ -91,6 +90,18 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
+    }
+
+    private function checkForInvalidRememberDeviceCookie($request, $username): bool
+    {
+        switch ($request) {
+            case is_null($request->cookies):
+            case is_null($request->cookies->get("REMEMBER_DEVICE")):
+            case $this->jwtEncoder->decode($request->cookies->get("REMEMBER_DEVICE"))['exp'] < time():
+            case $username != $this->jwtEncoder->decode($request->cookies->get("REMEMBER_DEVICE"))['user']:
+                return true;
+        }
+        return false;
     }
 
     private function addToValidTokens($token, $user): void
