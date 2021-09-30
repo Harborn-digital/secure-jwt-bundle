@@ -63,12 +63,12 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
         $response = $this->handleAuthenticationSuccess($token->getUser());
+        $username = $request->request->get('username');
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()) {
+            if ($this->checkForInvalidRememberDeviceCookie($request, $username)) {
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
-                $username    = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
                     'exp'  => $expiry_time,
@@ -90,6 +90,18 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function addResponsePayload(string $key, $value): void
     {
         $this->responsePayload[$key] = $value;
+    }
+
+    private function checkForInvalidRememberDeviceCookie($request, $username): bool
+    {
+        switch ($request) {
+            case is_null($request->cookies):
+            case is_null($request->cookies->get("REMEMBER_DEVICE")):
+            case $this->jwtEncoder->decode($request->cookies->get("REMEMBER_DEVICE"))['exp'] < time():
+            case $username != $this->jwtEncoder->decode($request->cookies->get("REMEMBER_DEVICE"))['user']:
+                return true;
+        }
+        return false;
     }
 
     private function addToValidTokens($token, $user): void
