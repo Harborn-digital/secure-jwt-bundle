@@ -10,7 +10,6 @@ namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Doctrine\Persistence\ManagerRegistry;
-use http\Cookie;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
