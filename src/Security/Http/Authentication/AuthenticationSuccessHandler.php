@@ -63,12 +63,13 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): JsonResponse
     {
         $response = $this->handleAuthenticationSuccess($token->getUser());
+        $username    = $request->request->get('username');
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()) {
+            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()
+                || $username != $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['user']) {
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
-                $username    = $request->request->get('username');
 
                 $data = $this->jwtEncoder->encode([
                     'exp'  => $expiry_time,
