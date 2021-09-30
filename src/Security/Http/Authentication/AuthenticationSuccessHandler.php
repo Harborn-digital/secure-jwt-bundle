@@ -64,10 +64,10 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $response = $this->handleAuthenticationSuccess($token->getUser());
         $username    = $request->request->get('username');
+        $remember_device_cookie = $request->cookies->get('REMEMBER_DEVICE');
 
         if ($this->rememberDeviceResolver->getRememberDeviceStatus()) {
-            if (is_null($request->cookies) || is_null($request->cookies->get('REMEMBER_DEVICE')) || $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['exp'] < time()
-                || $username != $this->jwtEncoder->decode($request->cookies->get('REMEMBER_DEVICE'))['user']) {
+            if (is_null($request->cookies) || is_null($remember_device_cookie) || $this->jwtEncoder->decode($remember_device_cookie)['exp'] < time() || $username != $this->jwtEncoder->decode($remember_device_cookie)['user']) {
 
                 $expiry_time = time() + $this->rememberDeviceResolver->getRememberDeviceExpiryDays() * 86400;
 
