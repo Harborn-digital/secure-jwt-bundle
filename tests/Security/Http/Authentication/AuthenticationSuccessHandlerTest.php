@@ -10,6 +10,7 @@ namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Doctrine\Persistence\ManagerRegistry;
+use http\Cookie;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
@@ -107,12 +108,27 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
     }
 
+    public function testRememberDeviceCookieIsReplacedAfterNewUserAuthenticates()
+    {
+        $request = $this->getRequest();
+        $token   = $this->getToken();
+
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(true), $this->getDoctrine()))
+            ->onAuthenticationSuccess($request, $token);
+
+        $cookies = $response->headers->getCookies();
+        $this->assertCount(2, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+
+    }
+
     private function getEncoder(): JWTEncoderInterface
     {
         $encoder = $this->createMock(JWTEncoderInterface::class);
 
         $encoder
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('decode')
             ->willReturn(['user' => 'example@example.org', 'exp' => 1627902433]);
 
@@ -139,11 +155,23 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $request->cookies = $this
+            ->getMockBuilder('Symfony\Component\HttpFoundation\Cookie')
+            ->setMethods(['get'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $request->request
             ->expects($this->any())
             ->method('get')
             ->with('username')
             ->will($this->returnValue('name'));
+
+        $request->cookies
+            ->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue('username'));
+
 
         return $request;
     }
