@@ -105,20 +105,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
         $this->assertCount(2, $cookies);
         $this->assertSame('BEARER', $cookies[0]->getName());
         $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
-    }
-
-    public function testRememberDeviceCookieIsReplacedAfterNewUserAuthenticates()
-    {
-        $request = $this->getRequest();
-        $token   = $this->getToken();
-
-        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($this->getJWTManager('secrettoken'), $this->getDispatcher()), $this->getEncoder(), 'strict', $this->getRememberDeviceResolver(true), $this->getDoctrine()))
-            ->onAuthenticationSuccess($request, $token);
-
-        $cookies = $response->headers->getCookies();
-        $this->assertCount(2, $cookies);
-        $this->assertSame('BEARER', $cookies[0]->getName());
-        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+        $this->assertSame('encoded_value', $cookies[1]->getValue());
 
     }
 
@@ -165,12 +152,6 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->method('get')
             ->with('username')
             ->will($this->returnValue('name'));
-
-        $request->cookies
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue('username'));
-
 
         return $request;
     }
