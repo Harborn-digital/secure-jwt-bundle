@@ -109,14 +109,45 @@ class AuthenticationSuccessHandlerTest extends TestCase
 
     }
 
-    private function getEncoder(): JWTEncoderInterface
+    public function testRememberDeviceCookieIsReplacedAfterNewAuthenticationSuccess()
+    {
+        $request = $this->getRequest();
+        $token   = $this->getToken();
+        $manager = $this->getJWTManager('secrettoken');
+        $dispatcher = $this->getDispatcher();
+        $encoder = $this->getEncoder();
+        $resolver = $this->getRememberDeviceResolver(true);
+        $doctrine = $this->getDoctrine();
+
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($manager, $dispatcher), $encoder, 'strict', $resolver, $doctrine))
+            ->onAuthenticationSuccess($request, $token);
+
+        $cookies = $response->headers->getCookies();
+        $this->assertCount(2, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+        $this->assertSame(['user' => 'example@example.org', 'exp' => 1627902433], $encoder->decode($cookies[1]->getValue()));
+
+        $encoder = $this->getEncoder('newuser@example.org');
+        $response = (new AuthenticationSuccessHandler(new LexikAuthenticationSuccessHandler($manager, $dispatcher), $encoder, 'strict', $resolver, $doctrine))
+            ->onAuthenticationSuccess($request, $token);
+
+        $cookies = $response->headers->getCookies();
+        $this->assertCount(2, $cookies);
+        $this->assertSame('BEARER', $cookies[0]->getName());
+        $this->assertSame('REMEMBER_DEVICE', $cookies[1]->getName());
+        $this->assertSame(['user' => 'newuser@example.org', 'exp' => 1627902433], $encoder->decode($cookies[1]->getValue()));
+
+    }
+
+    private function getEncoder($user = 'example@example.org'): JWTEncoderInterface
     {
         $encoder = $this->createMock(JWTEncoderInterface::class);
 
         $encoder
             ->expects($this->any())
             ->method('decode')
-            ->willReturn(['user' => 'example@example.org', 'exp' => 1627902433]);
+            ->willReturn(['user' => $user, 'exp' => 1627902433]);
 
         $encoder
             ->expects($this->any())
@@ -211,7 +242,7 @@ class AuthenticationSuccessHandlerTest extends TestCase
             ->getMock();
 
         $dispatcher
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('dispatch')
             ->with(
                 $this->isInstanceOf(AuthenticationSuccessEvent::class),
