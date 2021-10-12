@@ -12,7 +12,7 @@ services:
         exclude: '../../src/Security/Http/Authentication/AuthenticationFailureHandler.php'
 
     ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator:
-        decorates: 'api_platform.swagger.normalizer.api_gateway'
+        decorates: 'api_platform.openapi.normalizer.api_gateway'
         arguments: [ '@ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator.inner' ]
         autoconfigure: false
 
