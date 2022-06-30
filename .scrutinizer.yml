@@ -2,9 +2,9 @@ checks:
   php: true
 
 build:
+  image: default-bionic
   environment:
-    php:
-      version: 7.4
+    php: 8.1
 
   nodes:
     phpunit:
@@ -31,7 +31,7 @@ build:
         mongodb: false
         mysql: false
         php:
-          version: 7.4
+          version: 8.1
       tests:
         override:
           - php-scrutinizer-run
