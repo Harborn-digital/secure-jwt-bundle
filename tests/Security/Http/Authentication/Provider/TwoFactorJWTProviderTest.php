@@ -13,7 +13,7 @@ use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
 use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;

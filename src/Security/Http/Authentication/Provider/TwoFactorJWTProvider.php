@@ -14,7 +14,7 @@ use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
 use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
 use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;

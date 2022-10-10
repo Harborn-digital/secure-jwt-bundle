@@ -11,7 +11,7 @@ use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
 use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode as RecoveryCodeEntity;
 use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use ConnectHolland\SecureJWTBundle\Message\RecoveryCode;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

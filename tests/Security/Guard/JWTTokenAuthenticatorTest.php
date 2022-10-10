@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class JWTTokenAuthenticatorTest extends TestCase
 {
@@ -95,6 +96,6 @@ class JWTTokenAuthenticatorTest extends TestCase
                 ->willReturn($repository);
         }
 
-        return new JWTTokenAuthenticator($doctrine, $this->createMock(JWTManager::class), $this->createMock(EventDispatcherInterface::class), $tokenExtractor);
+        return new JWTTokenAuthenticator($doctrine, $this->createMock(JWTManager::class), $this->createMock(EventDispatcherInterface::class), $tokenExtractor, $this->createMock(TokenStorageInterface::class));
     }
 }
