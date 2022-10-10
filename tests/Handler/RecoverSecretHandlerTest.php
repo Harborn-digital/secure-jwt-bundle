@@ -12,7 +12,7 @@ use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
 use ConnectHolland\SecureJWTBundle\Handler\RecoverSecretHandler;
 use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
 use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;

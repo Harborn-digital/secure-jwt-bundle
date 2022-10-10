@@ -10,7 +10,7 @@ namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
 use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
 use ConnectHolland\SecureJWTBundle\Entity\RememberDeviceToken;
 use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;

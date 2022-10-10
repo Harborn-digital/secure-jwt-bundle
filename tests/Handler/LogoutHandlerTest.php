@@ -10,7 +10,7 @@ namespace ConnectHolland\SecureJWTBundle\Tests\Handler;
 use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
 use ConnectHolland\SecureJWTBundle\Handler\LogoutHandler;
 use ConnectHolland\SecureJWTBundle\Message\Logout;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use PHPUnit\Framework\TestCase;
