@@ -1,5 +1,5 @@
 {
-    "name": "connectholland/secure-jwt-bundle",
+    "name": "wietsedevelto/secure-jwt-bundle",
     "type": "library",
     "description": "Bundle to increase security of JWT based security",
     "license": "proprietary",
