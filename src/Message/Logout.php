@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Message;
+namespace Harborn\SecureJWTBundle\Message;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 

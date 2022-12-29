@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Resolver;
+namespace Harborn\SecureJWTBundle\Resolver;
 
 class RememberDeviceResolver
 {

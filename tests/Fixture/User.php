@@ -5,9 +5,9 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Fixture;
+namespace Harborn\SecureJWTBundle\Tests\Fixture;
 
-use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements TwoFactorUserInterface, UserInterface

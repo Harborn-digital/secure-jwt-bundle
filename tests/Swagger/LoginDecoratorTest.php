@@ -5,9 +5,9 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Swagger;
+namespace Harborn\SecureJWTBundle\Tests\Swagger;
 
-use ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator;
+use Harborn\SecureJWTBundle\Swagger\LoginDecorator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

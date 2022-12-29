@@ -1,5 +1,5 @@
 {
-    "name": "connectholland/secure-jwt-bundle",
+    "name": "harborn-digital/secure-jwt-bundle",
     "type": "library",
     "description": "Bundle to increase security of JWT based security",
     "license": "proprietary",
@@ -18,12 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ConnectHolland\\SecureJWTBundle\\": "src/"
+            "Harborn\\SecureJWTBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ConnectHolland\\SecureJWTBundle\\Tests\\": "tests/"
+            "Harborn\\SecureJWTBundle\\Tests\\": "tests/"
         }
     },
     "require-dev": {

@@ -5,11 +5,11 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
+namespace Harborn\SecureJWTBundle\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
-use ConnectHolland\SecureJWTBundle\Entity\RememberDeviceToken;
-use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
+use Harborn\SecureJWTBundle\Entity\InvalidToken;
+use Harborn\SecureJWTBundle\Entity\RememberDeviceToken;
+use Harborn\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\HttpFoundation\Cookie;

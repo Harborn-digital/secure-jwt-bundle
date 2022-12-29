@@ -5,9 +5,9 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Firewall;
+namespace Harborn\SecureJWTBundle\Security\Firewall;
 
-use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
+use Harborn\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;

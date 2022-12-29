@@ -16,8 +16,8 @@ $config
             ]],
         'header_comment' => [
             'header' => <<<EOH
-This file is part of the Connect Holland Secure JWT package and distributed under the terms of the MIT License.
-Copyright (c) 2020-2021 Connect Holland.
+This file is part of the Harborn Digital Secure JWT package and distributed under the terms of the MIT License.
+Copyright (c) 2020-2022 Harborn Digital.
 EOH
                 ,
             ]

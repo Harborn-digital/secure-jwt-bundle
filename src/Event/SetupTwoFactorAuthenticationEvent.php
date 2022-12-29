@@ -5,9 +5,9 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Event;
+namespace Harborn\SecureJWTBundle\Event;
 
-use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

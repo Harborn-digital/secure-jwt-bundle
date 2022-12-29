@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
+namespace Harborn\SecureJWTBundle\Tests\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
-use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Harborn\SecureJWTBundle\Resolver\RememberDeviceResolver;
+use Harborn\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;

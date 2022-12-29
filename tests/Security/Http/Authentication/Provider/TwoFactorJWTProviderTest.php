@@ -5,14 +5,14 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication\Provider;
+namespace Harborn\SecureJWTBundle\Tests\Security\Http\Authentication\Provider;
 
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
-use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
-use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Harborn\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
+use Harborn\SecureJWTBundle\Security\Http\Authentication\Provider\TwoFactorJWTProvider;
+use Harborn\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
+use Harborn\SecureJWTBundle\Tests\Fixture\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use PHPUnit\Framework\TestCase;

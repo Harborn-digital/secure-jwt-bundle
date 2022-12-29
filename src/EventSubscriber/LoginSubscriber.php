@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\EventSubscriber;
+namespace Harborn\SecureJWTBundle\EventSubscriber;
 
-use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
-use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use Harborn\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;

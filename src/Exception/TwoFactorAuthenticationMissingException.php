@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Exception;
+namespace Harborn\SecureJWTBundle\Exception;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 

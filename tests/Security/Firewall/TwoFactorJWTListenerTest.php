@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Security\Firewall;
+namespace Harborn\SecureJWTBundle\Tests\Security\Firewall;
 
-use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\TwoFactorJWTListenerFixture;
+use Harborn\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
+use Harborn\SecureJWTBundle\Tests\Fixture\TwoFactorJWTListenerFixture;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

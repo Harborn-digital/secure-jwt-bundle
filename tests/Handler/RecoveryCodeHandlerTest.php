@@ -5,12 +5,12 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Handler;
+namespace Harborn\SecureJWTBundle\Tests\Handler;
 
-use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode as RecoveryCodeEntity;
-use ConnectHolland\SecureJWTBundle\Handler\RecoveryCodeHandler;
-use ConnectHolland\SecureJWTBundle\Message\RecoveryCode;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Harborn\SecureJWTBundle\Entity\RecoveryCode as RecoveryCodeEntity;
+use Harborn\SecureJWTBundle\Handler\RecoveryCodeHandler;
+use Harborn\SecureJWTBundle\Message\RecoveryCode;
+use Harborn\SecureJWTBundle\Tests\Fixture\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

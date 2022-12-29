@@ -5,15 +5,15 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication\Provider;
+namespace Harborn\SecureJWTBundle\Security\Http\Authentication\Provider;
 
-use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
-use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
-use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
-use ConnectHolland\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
+use Harborn\SecureJWTBundle\Entity\InvalidToken;
+use Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use Harborn\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Message\RecoverSecret;
+use Harborn\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
+use Harborn\SecureJWTBundle\Security\Token\TwoFactorJWTToken;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -101,7 +101,7 @@ class TwoFactorJWTProvider extends DaoAuthenticationProvider
             $repository = $this->doctrine->getRepository(InvalidToken::class);
 
             if (!$repository instanceof EntityRepository) {
-                throw new \RuntimeException('Unable to verify token because doctrine is not set up correctly. Please configure `vendor/connectholland/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
+                throw new \RuntimeException('Unable to verify token because doctrine is not set up correctly. Please configure `vendor/harborn-digital/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
             }
 
             if ($repository->findOneBy(['token' => $token]) instanceof InvalidToken) {

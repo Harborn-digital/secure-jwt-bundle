@@ -7,23 +7,23 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: false
 
-    ConnectHolland\SecureJWTBundle\:
+    Harborn\SecureJWTBundle\:
         resource: '../../src/{EventSubscriber,Handler,Security}'
         exclude: '../../src/Security/Http/Authentication/AuthenticationFailureHandler.php'
 
-    ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator:
+    Harborn\SecureJWTBundle\Swagger\LoginDecorator:
         decorates: 'api_platform.openapi.normalizer.api_gateway'
-        arguments: [ '@ConnectHolland\SecureJWTBundle\Swagger\LoginDecorator.inner' ]
+        arguments: [ '@Harborn\SecureJWTBundle\Swagger\LoginDecorator.inner' ]
         autoconfigure: false
 
-    ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler:
+    Harborn\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler:
         arguments:
             $sameSite: '%env(default:cookie_same_site_default:JWT_COOKIE_SAMESITE)%'
             $successHandler: '@Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler'
-            $rememberDeviceResolver: '@ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver'
+            $rememberDeviceResolver: '@Harborn\SecureJWTBundle\Resolver\RememberDeviceResolver'
 
 
-    ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver:
+    Harborn\SecureJWTBundle\Resolver\RememberDeviceResolver:
         public: true
         arguments:
             $configuration: []

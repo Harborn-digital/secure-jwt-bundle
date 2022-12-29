@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Factory;
+namespace Harborn\SecureJWTBundle\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,11 +27,11 @@ class TwoFactoryJWTFactory extends AbstractFactory
 
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId): string
     {
-        return 'connectholland.secure_jwt.two_factor_jwt.provider';
+        return 'harborn-digital.secure_jwt.two_factor_jwt.provider';
     }
 
     protected function getListenerId(): string
     {
-        return 'connectholland.secure_jwt.two_factor_jwt.listener';
+        return 'harborn-digital.secure_jwt.two_factor_jwt.listener';
     }
 }

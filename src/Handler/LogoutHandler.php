@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Handler;
+namespace Harborn\SecureJWTBundle\Handler;
 
-use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
-use ConnectHolland\SecureJWTBundle\Message\Logout;
+use Harborn\SecureJWTBundle\Entity\InvalidToken;
+use Harborn\SecureJWTBundle\Message\Logout;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
@@ -46,7 +46,7 @@ class LogoutHandler implements MessageHandlerInterface
                 $manager->persist($invalidToken);
                 $manager->flush();
             } else {
-                throw new \RuntimeException('Unable to invalid token because doctrine is not set up correctly. Please configure `vendor/connectholland/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
+                throw new \RuntimeException('Unable to invalid token because doctrine is not set up correctly. Please configure `vendor/harborn-digital/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
             }
 
             $response->headers->clearCookie('BEARER', '/', null, true, true, 'none');

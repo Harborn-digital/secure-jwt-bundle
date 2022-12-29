@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\DTO;
+namespace Harborn\SecureJWTBundle\DTO;
 
 final class GeneratedCodes
 {

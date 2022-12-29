@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Swagger;
+namespace Harborn\SecureJWTBundle\Swagger;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

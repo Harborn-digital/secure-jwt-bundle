@@ -5,11 +5,11 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Handler;
+namespace Harborn\SecureJWTBundle\Handler;
 
-use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
+use Harborn\SecureJWTBundle\Entity\RecoveryCode;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Message\RecoverSecret;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

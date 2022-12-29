@@ -5,11 +5,11 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Http\Authentication;
+namespace Harborn\SecureJWTBundle\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use Harborn\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

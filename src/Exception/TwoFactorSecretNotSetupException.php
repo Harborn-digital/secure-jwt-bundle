@@ -5,9 +5,9 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Exception;
+namespace Harborn\SecureJWTBundle\Exception;
 
-use ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface;
+use Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Throwable;
 

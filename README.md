@@ -5,13 +5,13 @@ Symfony bundle that makes JWT more secure
 Installation is not fluent and error free yet, but it is easy to work around:
 
 ```bash
-composer require connectholland/secure-jwt-bundle
+composer require harborn-digital/secure-jwt-bundle
 ```
 
 Will give error in post installation:
 
 ```
-Cannot autowire service "ConnectHolland\SecureJWTBundle\EventSubscriber\LoginSubscriber": argument "$googleAuthenticator" of method "__construct()" references class "Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator" but no such service exists.
+Cannot autowire service "Harborn\SecureJWTBundle\EventSubscriber\LoginSubscriber": argument "$googleAuthenticator" of method "__construct()" references class "Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator" but no such service exists.
 ```
 
 Configure scheb twofactor Google:
@@ -25,7 +25,7 @@ scheb_two_factor:
     google:
         enabled: true
         server_name: Secure Server
-        issuer: Connect Holland
+        issuer: Harborn Digital
         digits: 6
         window: 1
 ```
@@ -33,7 +33,7 @@ scheb_two_factor:
 Run
 
 ```bash
-composer require connectholland/secure-jwt-bundle
+composer require harborn-digital/secure-jwt-bundle
 ```
 
 Again to finish the installation. 
@@ -90,11 +90,11 @@ In the `doctrine.yaml` file:
 doctrine:
     orm:
         mappings:
-            ConnectHolland\SecureJWTBundle:
+            Harborn\SecureJWTBundle:
                 is_bundle: true
                 type: annotation
-                dir: '%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Entity'
-                prefix: 'ConnectHolland\SecureJWTBundle\Entity'
+                dir: '%kernel.project_dir%/vendor/harborn-digital/secure-jwt-bundle/src/Entity'
+                prefix: 'Harborn\SecureJWTBundle\Entity'
                 alias: SecureJWTBundle
 ```
 
@@ -111,7 +111,7 @@ In the `api_platform.yaml` file:
 ```yaml
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/vendor/connectholland/secure-jwt-bundle/src/Message']
+        paths: ['%kernel.project_dir%/vendor/harborn-digital/secure-jwt-bundle/src/Message']
 ```
 
 Of course do not remove other required paths that might already be in the `paths` configuration.
@@ -137,7 +137,7 @@ In the `security.yaml` file:
         anonymous: true
         guard:
             authenticators:
-                - ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator
+                - Harborn\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator
 ```
 
 ## Two Factor Authentication in JWT
@@ -169,13 +169,13 @@ In the `security.yaml` file:
         anonymous: true        
         two_factor_jwt:
             check_path:               /api/login_check
-            success_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
-            failure_handler:          ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler
+            success_handler:          Harborn\SecureJWTBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+            failure_handler:          Harborn\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler
 ```
 
 ### Implement the right interfaces
 
-Your User object should implement `ConnectHolland\SecureJWTBundle\Entity\TwoFactorUserInterface`.
+Your User object should implement `Harborn\SecureJWTBundle\Entity\TwoFactorUserInterface`.
 
 ## Using 2FA
 
@@ -226,12 +226,12 @@ To configure:
 
 
 In the config/packages folder of the root project create a new file called:
-`connect_holland_secure_jwt.yaml`
+`harborn_digital_secure_jwt.yaml`
 
 In this file the configuration can be set:
 
 ```yaml
-connect_holland_secure_jwt:
+harborn_digital_secure_jwt:
   is_remembered: true
   expiry_days: 14
 ```

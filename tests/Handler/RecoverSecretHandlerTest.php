@@ -5,13 +5,13 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Handler;
+namespace Harborn\SecureJWTBundle\Tests\Handler;
 
-use ConnectHolland\SecureJWTBundle\Entity\RecoveryCode;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWTBundle\Handler\RecoverSecretHandler;
-use ConnectHolland\SecureJWTBundle\Message\RecoverSecret;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Harborn\SecureJWTBundle\Entity\RecoveryCode;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Handler\RecoverSecretHandler;
+use Harborn\SecureJWTBundle\Message\RecoverSecret;
+use Harborn\SecureJWTBundle\Tests\Fixture\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

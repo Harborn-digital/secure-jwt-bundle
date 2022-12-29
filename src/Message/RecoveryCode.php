@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Message;
+namespace Harborn\SecureJWTBundle\Message;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ConnectHolland\SecureJWTBundle\DTO\GeneratedCodes;
+use Harborn\SecureJWTBundle\DTO\GeneratedCodes;
 
 /**
  * Create recovery codes for the current user. Will invalidate any existing codes for that user.

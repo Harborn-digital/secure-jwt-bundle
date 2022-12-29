@@ -5,7 +5,7 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Entity;
+namespace Harborn\SecureJWTBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

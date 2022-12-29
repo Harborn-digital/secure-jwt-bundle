@@ -5,15 +5,15 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\DependencyInjection;
+namespace Harborn\SecureJWTBundle\DependencyInjection;
 
-use ConnectHolland\SecureJWTBundle\Resolver\RememberDeviceResolver;
+use Harborn\SecureJWTBundle\Resolver\RememberDeviceResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class ConnectHollandSecureJWTExtension extends Extension
+class HarbornSecureJWTExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

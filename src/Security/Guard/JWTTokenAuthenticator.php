@@ -7,9 +7,9 @@ declare(strict_types=1);
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Guard;
+namespace Harborn\SecureJWTBundle\Security\Guard;
 
-use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
+use Harborn\SecureJWTBundle\Entity\InvalidToken;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\ExpiredTokenException;
@@ -43,7 +43,7 @@ class JWTTokenAuthenticator extends BaseAuthenticator
         $repository = $this->doctrine->getRepository(InvalidToken::class);
 
         if (!$repository instanceof EntityRepository) {
-            throw new \RuntimeException('Unable to verify token because doctrine is not set up correctly. Please configure `vendor/connectholland/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
+            throw new \RuntimeException('Unable to verify token because doctrine is not set up correctly. Please configure `vendor/harborn-digital/secure-jwt/src/Entity` as an annotated entity path (see README.md for more details)');
         }
 
         if ($repository->findOneBy(['token' => $token]) instanceof InvalidToken) {

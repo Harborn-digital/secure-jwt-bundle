@@ -5,13 +5,13 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Security\Http\Authentication;
+namespace Harborn\SecureJWTBundle\Tests\Security\Http\Authentication;
 
-use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
-use ConnectHolland\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
-use ConnectHolland\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Harborn\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use Harborn\SecureJWTBundle\Exception\TwoFactorAuthenticationMissingException;
+use Harborn\SecureJWTBundle\Exception\TwoFactorSecretNotSetupException;
+use Harborn\SecureJWTBundle\Security\Http\Authentication\AuthenticationFailureHandler;
+use Harborn\SecureJWTBundle\Tests\Fixture\User;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;

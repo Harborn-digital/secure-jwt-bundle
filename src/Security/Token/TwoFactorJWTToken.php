@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Security\Token;
+namespace Harborn\SecureJWTBundle\Security\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 

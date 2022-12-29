@@ -5,18 +5,18 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests;
+namespace Harborn\SecureJWTBundle\Tests;
 
-use ConnectHolland\SecureJWTBundle\ConnectHollandSecureJWTBundle;
+use Harborn\SecureJWTBundle\HarbornSecureJWTBundle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ConnectHollandSecureJWTBundleTest extends TestCase
+class HarbornSecureJWTBundleTest extends TestCase
 {
     public function testSecurityFactoryIsAdded(): void
     {
-        $bundle    = new ConnectHollandSecureJWTBundle();
+        $bundle    = new HarbornSecureJWTBundle();
         $container = $this->createMock(ContainerBuilder::class);
         $extension = $this->createMock(SecurityExtension::class);
 

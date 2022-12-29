@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\EventSubscriber;
+namespace Harborn\SecureJWTBundle\Tests\EventSubscriber;
 
-use ConnectHolland\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
-use ConnectHolland\SecureJWTBundle\EventSubscriber\LoginSubscriber;
-use ConnectHolland\SecureJWTBundle\Tests\Fixture\User;
+use Harborn\SecureJWTBundle\Event\SetupTwoFactorAuthenticationEvent;
+use Harborn\SecureJWTBundle\EventSubscriber\LoginSubscriber;
+use Harborn\SecureJWTBundle\Tests\Fixture\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;

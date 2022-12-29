@@ -5,13 +5,13 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle;
+namespace Harborn\SecureJWTBundle;
 
-use ConnectHolland\SecureJWTBundle\Security\Factory\TwoFactoryJWTFactory;
+use Harborn\SecureJWTBundle\Security\Factory\TwoFactoryJWTFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ConnectHollandSecureJWTBundle extends Bundle
+class HarbornSecureJWTBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {

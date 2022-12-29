@@ -5,10 +5,10 @@
  * Copyright (c) 2020-2021 Connect Holland.
  */
 
-namespace ConnectHolland\SecureJWTBundle\Tests\Security\Guard;
+namespace Harborn\SecureJWTBundle\Tests\Security\Guard;
 
-use ConnectHolland\SecureJWTBundle\Entity\InvalidToken;
-use ConnectHolland\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
+use Harborn\SecureJWTBundle\Entity\InvalidToken;
+use Harborn\SecureJWTBundle\Security\Guard\JWTTokenAuthenticator;
 use Doctrine\ORM\EntityRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\ExpiredTokenException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
