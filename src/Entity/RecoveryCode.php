@@ -37,6 +37,11 @@ class RecoveryCode
      */
     private string $secret;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $downloaded = false;
+
     public function getId(): int
     {
         return $this->id;
@@ -60,5 +65,15 @@ class RecoveryCode
     public function setSecret(string $secret): void
     {
         $this->secret = $secret;
+    }
+
+    public function isDownloaded(): bool
+    {
+        return $this->downloaded;
+    }
+
+    public function setDownloaded(bool $downloaded): void
+    {
+        $this->downloaded = $downloaded;
     }
 }
