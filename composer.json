@@ -4,7 +4,7 @@
     "description": "Bundle to increase security of JWT based security",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": "^8.2",
         "lexik/jwt-authentication-bundle": "^2.16",
         "ext-json": "*",
         "doctrine/orm": "^2.7",
